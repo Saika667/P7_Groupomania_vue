@@ -1,6 +1,12 @@
 <script>
     export default {
-       props: ['imageAddress']
+       props : {
+            imageAddress: String,
+            backgroundColor: {
+                type: String,
+                default: 'white'
+            }
+        },
     }
 </script>
 
@@ -17,7 +23,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: auto;
+        padding: 0 auto 30px auto;
+        background-color: v-bind(backgroundColor);
         embed {
             z-index: 2;
         }

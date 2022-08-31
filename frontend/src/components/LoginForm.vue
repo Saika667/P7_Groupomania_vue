@@ -31,8 +31,10 @@
 <style scoped lang="scss">
     .choice {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         color: #4E5166;
+        width: 408px;
+        
         &-FMdp {
             text-decoration: none;
             color: #4E5166;

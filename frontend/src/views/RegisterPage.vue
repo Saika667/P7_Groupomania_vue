@@ -15,29 +15,36 @@ export default {
     MenuItem,
     Logo,
     Footer,
-}
+  }
 }
 </script>
 
-<template class="background">
-  <!--<Header imageAddress="../images/icon-left-font.svg">
+<template>
+  <div class="background">
+    <!--<Header imageAddress="../images/icon-left-font.svg">
+      <Menu>
+        <MenuItem href="/">Se connecter</MenuItem>
+        <MenuItem href="/register">S'inscrire</MenuItem>
+      </Menu>
+    </Header>-->
+    <!-- v-bind sur une props car on passe un bool et non une string -->
+    <Logo imageAddress="../images/icon-left-font-monochrome-white.svg"/>
     <Menu>
       <MenuItem href="/">Se connecter</MenuItem>
-      <MenuItem href="/register">S'inscrire</MenuItem>
+      <MenuItem href="/register" v-bind:isActive="true">S'inscrire</MenuItem>
     </Menu>
-  </Header>-->
-  <!-- v-bind sur une props car on passe un bool et non une string -->
-  <Logo imageAddress="../images/icon-left-font-monochrome-white.svg"/>
-  <Menu>
-    <MenuItem href="/">Se connecter</MenuItem>
-    <MenuItem href="/register" v-bind:isActive="true">S'inscrire</MenuItem>
-  </Menu>
-  <RegistrationForm></RegistrationForm>
-  <Footer />
+    <RegistrationForm></RegistrationForm>
+    <Footer />
+  </div>
 </template>
 
 <style lang="scss">
-    #app {
+    
+</style>
+
+<style lang="scss" scoped>
+    .background {
+        width: 100%;
         background: url('../public/images/worker.jpg') center;
         background-size: cover;
         position: relative;
@@ -52,8 +59,4 @@ export default {
             z-index: 1;
         }
     }
-</style>
-
-<style lang="scss" scoped>
-    
 </style>

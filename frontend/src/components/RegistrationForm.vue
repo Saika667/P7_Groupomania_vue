@@ -23,6 +23,8 @@
             <FormInput inputId="prenom" label="Prénom" type="text" iconClass="fas fa-user" inputWidth="150px"/>
         </div>
 
+        <FormInput inputId="profil-image" label="Photo de profil" type="file" iconClass="fas fa-camera" />
+
         <FormInput inputId="poste" label="Poste occupé" type="text" iconClass="fas fa-briefcase"/>
         <select name="" id="">
             <option v-for="department in departments" v-bind:value="department">{{department}}</option>
@@ -43,16 +45,22 @@
         display: flex;
     }
     select {
-        height: 30px;
+        height: 35px;
         background: #FD2D01;
         color: white;
         font-size: 1rem;
         border: 2px #FD2D01 solid;
+        text-align: center;
     }
     textarea {
         width: 408px;
         height: 100px;
         border: 1px solid #FD2D01;
+        border-radius: 4px;
         font-size: 1rem;
+        &:focus {
+            box-shadow: 0px 0px 5px 0px #FD2D01;
+            outline-style: none;
+        }
     }
 </style>

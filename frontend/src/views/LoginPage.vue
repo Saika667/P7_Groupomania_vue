@@ -20,25 +20,32 @@ export default {
 </script>
 
 <template>
-  <!--<Header imageAddress="../images/icon-left-font.svg">
+  <div class="background">
+    <!--<Header imageAddress="../images/icon-left-font.svg">
+        <Menu>
+        <MenuItem href="/">Se connecter</MenuItem>
+        <MenuItem href="/register">S'inscrire</MenuItem>
+        </Menu>
+    </Header>-->
+    <!-- Y a t il mieux ?-->
+    <Logo imageAddress="../images/icon-left-font-monochrome-white.svg"/>
     <Menu>
-      <MenuItem href="/">Se connecter</MenuItem>
-      <MenuItem href="/register">S'inscrire</MenuItem>
+        <MenuItem href="/" v-bind:isActive="true">Se connecter</MenuItem>
+        <MenuItem href="/register">S'inscrire</MenuItem>
     </Menu>
-  </Header>-->
-  <!-- Y a t il mieux ?-->
-  <Logo imageAddress="../images/icon-left-font-monochrome-white.svg"/>
-  <Menu>
-    <MenuItem href="/" v-bind:isActive="true">Se connecter</MenuItem>
-    <MenuItem href="/register">S'inscrire</MenuItem>
-  </Menu>
-  <LoginForm></LoginForm>
-  <Footer />
+    <LoginForm></LoginForm>
+    <Footer />
+  </div>
 </template>
 
 <style lang="scss">
-    #app {
-        background: url('../public/images/worfer.jpg') center;
+    
+</style>
+
+<style lang="scss" scoped>
+   .background {
+        width: 100%;
+        background: url('../public/images/worker.jpg') center;
         background-size: cover;
         position: relative;
         &::after {
@@ -52,8 +59,4 @@ export default {
             z-index: 1;
         }
     }
-</style>
-
-<style lang="scss" scoped>
-   
 </style>

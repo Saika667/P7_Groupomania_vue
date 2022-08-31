@@ -7,6 +7,7 @@ const app = express();
 const helmet = require('helmet');
 
 const path = require('path');
+const userRoutes = require('./routes/users');
 
 // Récupération de la config via le .env situé dans le dossier config
 require('dotenv').config({ path : './config/.env' });
@@ -55,6 +56,8 @@ app.use(helmet({
 
 // Appliquer le limiteur
 app.use(limiter);
+
+app.use('/api/auth', userRoutes);
 
 //utilisation du middleware static fournit par express
 app.use('/images', express.static(path.join(__dirname, 'images')));

@@ -16,10 +16,9 @@
     div {
         display: flex;
         justify-content: center;
-        margin: 40px 10px;
+        margin: 25px 10px;
 
         button {
-            padding: 15px 30px;
             font-size: larger;
             white-space: nowrap;
             width: 300px;
@@ -27,6 +26,7 @@
             border: #FD2D01;
             color: white;
             text-transform: uppercase;
+            padding: 0;
             
             &:hover {
                 background-color: #FFD7D7;
@@ -36,6 +36,8 @@
             }
             
             a {
+                display: block;
+                padding: 15px 30px;
                 color: white;
             }
         }
