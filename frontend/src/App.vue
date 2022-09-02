@@ -1,12 +1,12 @@
 <script>
 export default {
   name: "App",
-  components: {},
+  components: {}
 };
 </script>
 
 <template>
-  <router-view></router-view>
+  <router-view ref="preload" v-bind:class="{ preload: this.preload}"></router-view>
 </template>
 
 <style scoped>
@@ -25,5 +25,11 @@ export default {
   }
   button {
     cursor: pointer;
+  }
+  #app {
+    height: 100vh;
+  }
+  .preload {
+    animation: none;
   }
 </style>

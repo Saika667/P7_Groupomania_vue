@@ -22,6 +22,26 @@
 
 <style scoped lang="scss">
     li {
+        background-color: #FFFFFF;
+        border-radius: 6px 6px 0 0;
+        margin-right: 10px;
+        a {
+            display: block;
+            padding: 12px 35px;
+            color: #4E5166;
+            font-weight: bold;
+        }
+        &.active, &:hover {
+            
+            background-color: rgb(78 81 102 / 75%);
+            transition: all 0.7s linear;
+            & a {
+                color: #FFFFFF;
+                transition: all 0.35s linear;
+            }
+        }
+    }
+    /*li {
         border-radius: 10px;
         //border: 1px solid black;
         z-index: 2;
@@ -44,5 +64,5 @@
                 color: #FFD7D7;
             }
         }
-    }
+    }*/
 </style>

@@ -18,6 +18,9 @@
 
 <template>
     <Form>
+        <h2>Inscrivez-vous</h2>
+        <hr />
+
         <div class="name">
             <FormInput inputId="nom" label="Nom" type="text" iconClass="fas fa-user" inputWidth="150px"/>
             <FormInput inputId="prenom" label="Prénom" type="text" iconClass="fas fa-user" inputWidth="150px"/>
@@ -41,6 +44,12 @@
 </template>
 
 <style scoped lang="scss">
+    hr {
+        width: 35px;
+        border: none;
+        border-bottom: 2px solid#FD2D01;
+        margin: 15px 0;
+    }
     .name {
         display: flex;
     }
@@ -53,11 +62,13 @@
         text-align: center;
     }
     textarea {
-        width: 408px;
+        width: 100%;
         height: 100px;
         border: 1px solid #FD2D01;
         border-radius: 4px;
         font-size: 1rem;
+        margin-bottom: 15px;
+
         &:focus {
             box-shadow: 0px 0px 5px 0px #FD2D01;
             outline-style: none;

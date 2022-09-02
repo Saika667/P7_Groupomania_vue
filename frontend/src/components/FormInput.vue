@@ -53,6 +53,31 @@
 <style scoped lang="scss">
     .inputContainer {
         display: flex;
+        margin: 0 0 15px 0;
+        align-items: center;
+        position: relative;
+        &-icon {
+            position: absolute;
+        }
+        input {
+            border: none;
+            padding: 5px 10px 5px 30px;
+            width: 100%;
+            height: 40px;
+            border-bottom: 1px solid #eaeaea;
+            &:focus {
+                outline: none;
+            }
+        }
+        svg {
+            color: #FFD7D7;
+            &.focused {
+                color: #FD2D01;
+            }
+        }
+    }
+    /*.inputContainer {
+        display: flex;
         margin: 0 auto 15px auto;
         width: min-content;
         border-bottom: 1px solid #FD2D01;
@@ -78,8 +103,8 @@
             color: #FFD7D7;
             font-size: 25px;
             &.focused {
-                color: #FD2D01;
+                color: c#FD2D01;
             }
         }
-    }
+    }*/
 </style>

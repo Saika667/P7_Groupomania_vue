@@ -24,7 +24,6 @@
         justify-content: center;
         align-items: center;
         padding: 0 auto 30px auto;
-        background-color: v-bind(backgroundColor);
         embed {
             z-index: 2;
         }

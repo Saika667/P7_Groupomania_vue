@@ -12,7 +12,13 @@
                 <ProfilImage></ProfilImage>
                 <div class="post-header-profil-identity">
                     <h2>Nom Prénom</h2>
-                    <p>Métier - Département</p>
+                    <div class="post-header-profil-identity-job">
+                        <font-awesome-icon icon="fas fa-briefcase"/>
+                        <p>Métier - Département</p>
+                    </div>
+                    <p class="post-header-profil-identity-timer">
+                        Il y a <span>17h</span>
+                    </p>
                 </div>
             </div>
             
@@ -50,23 +56,22 @@
 
 <style scoped lang="scss">
     .post {
-        width: 95%;
+        width: 70%;
         margin: 10px auto;
         border-radius: 10px;
         color: #4E5166;
         background-color: white;
-        box-shadow: 0px 0px 7px 0px #FD2D01;
+        //box-shadow: 0px 0px 7px 0px #FD2D01;
+        padding: 20px;
 
         &-header {
             display: flex;
             justify-content: space-between;
-            padding-top: 10px;
 
             &-profil {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                padding: 0 0 0 10px;
 
                 &-identity {
                     padding: 0 0 0 10px;
@@ -75,9 +80,16 @@
                         font-size: 18px;
                         margin: 0;
                     }
-
-                    p {
-                        font-size: 10px;
+                    &-job {
+                        display: flex;
+                        font-size: 11px;
+                        p {
+                            padding: 0 0 0 5px;
+                        }
+                    }
+                    &-timer {
+                        font-size: 9px;
+                        font-style: italic;
                     }
                 }
             }
@@ -98,6 +110,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            margin: 10px 0;
 
             &-descrip {
                 width: 98%;
@@ -117,7 +130,7 @@
             display: flex;
             justify-content: space-between;
             flex-direction: column;
-            padding: 10px 15px;
+            padding: 10px 15px 0 15px;
 
             &-number {
                 display: flex;
@@ -131,8 +144,8 @@
                     border-radius: 20px;
                     border: none;
                     width: 89%;
-                    padding-left: 5px;
-                    background-color: #FFD7D7;
+                    padding-left: 15px;
+                    background-color: lighten(#4E5166, 60);
                 }
             }
         }

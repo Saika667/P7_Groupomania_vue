@@ -5,15 +5,27 @@
 </script>
 
 <template>
-    <div>
-        <button>
-            <router-link v-slot="button" v-bind:to="url">{{ label }}</router-link>
-        </button>
-    </div>
+    <button>
+        <router-link v-slot="button" v-bind:to="url">{{ label }}</router-link>
+    </button>
 </template>
 
 <style scoped lang="scss">
-    div {
+    button {
+        background-color: #FD2D01;
+        width: fit-content;
+        font-weight: bold;
+        box-shadow: 0 10px 18px 0 rgb(0 0 0 / 17%);
+        border: none;
+        border-radius: 4px;
+        
+        a {
+            color: #FFFFFF;
+            display: block;
+            padding: 12px 50px;
+        }
+    }
+    /*div {
         display: flex;
         justify-content: center;
         margin: 25px 10px;
@@ -41,6 +53,5 @@
                 color: white;
             }
         }
-    }
-    
+    }*/
 </style>

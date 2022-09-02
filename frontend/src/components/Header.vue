@@ -15,17 +15,24 @@
 
 <style scoped lang="scss">
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border: 1px black solid;
+    height: 70px;
+    background-color: #FD2D01
+;
+    width: 100%;
+    position: fixed;
     div {
-        width: 40%;
-        height: 100px;
-        overflow-y: hidden;
+        margin-left: 100px;
+        width: min-content;
+        display: flex;
+        height: 70px;
+        align-items: center;
         embed {
-            max-height: 100%;
+            width: 60px;
+            
+            /*max-height: 100%;
             transform: scale(3);
-            transform-origin: 20% 50%;
+            transform-origin: 20% 50%;*/
         }
     }
 }

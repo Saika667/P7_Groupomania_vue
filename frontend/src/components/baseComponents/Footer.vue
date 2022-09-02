@@ -15,11 +15,16 @@
         height: 70px;
         display: flex;
         z-index: 2;
-        position: relative;
+        position: absolute;
         align-items: center;
         justify-content: space-between;
         padding: 0 20px;
         color: white;
+        margin: 50px auto 0 auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
         h3 {
             font-size: 1.3rem;
         }
