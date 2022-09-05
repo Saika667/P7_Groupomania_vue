@@ -1,19 +1,15 @@
 <script>
-import Header from "../components/Header.vue";
-import Menu from "../components/Menu.vue";
-import MenuItem from "../components/MenuItem.vue";
+import Header from "../components/baseComponents/Header.vue";
 import Logo from "../components/Logo.vue";
-import Post from "../components/Post.vue";
-import MenuItemHome from "../components/MenuItemHome.vue";
-import MenuHome from "../components/MenuHome.vue";
-import CreatePostForm from "../components/CreatePostForm.vue";
+import Post from "../components/pairedComponent/Post.vue";
+import MenuItemHome from "../components/menuComponent/MenuItemHome.vue";
+import MenuHome from "../components/menuComponent/MenuHome.vue";
+import CreatePostForm from "../components/pairedComponent/CreatePostForm.vue";
 
 export default {
     name: "HomePage",
     components: {
         Header,
-        Menu,
-        MenuItem,
         Logo,
         Post,
         MenuItemHome,
@@ -26,31 +22,19 @@ export default {
 <template>
     <Header imageAddress="../images/icon-cropped-white.svg"/>
     <MenuHome>
-        <MenuItemHome iconClass="fas fa-user" :key="profileMenu">Mon profil</MenuItemHome>
+        <router-link to="/profil">
+            <MenuItemHome iconClass="fas fa-user" :key="profileMenu">Mon profil</MenuItemHome>
+        </router-link>
         <MenuItemHome iconClass="fas fa-bell" :key="logoutMenu">Mes notifications</MenuItemHome>
         <router-link to="/community">
             <MenuItemHome iconClass="fas fa-users" :key="logoutMenu">Communauté</MenuItemHome>
         </router-link>
         <MenuItemHome iconClass="fas fa-power-off" :key="logoutMenu">Déconnexion</MenuItemHome>
     </MenuHome>
-    <div class="news">
+    <main class="news">
         <CreatePostForm></CreatePostForm>
         <Post></Post>
-    </div>
-    <!--<MenuHome v-show="extended">
-        <MenuItemHome iconClass="fas fa-user" :key="profileMenu"></MenuItemHome>
-        <MenuItemHome iconClass="fas fa-power-off" :key="logoutMenu"></MenuItemHome>
-    </MenuHome>-->
-    <!--<Logo imageAddress="../images/icon-left-font-monochrome-white.svg" backgroundColor="#FD2D01"/>
-    <main class="main">
-        <div class="main-side-menu">
-
-        </div>
-        <div class="main-news">
-            <Post></Post>
-            <Post></Post>
-        </div>
-    </main>-->
+    </main>
 </template>
 
 <style lang="scss" scoped>

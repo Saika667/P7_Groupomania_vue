@@ -1,24 +1,19 @@
 <script>
     import Header from "../components/baseComponents/Header.vue";
-    import Logo from "../components/Logo.vue";
     import MenuItemHome from "../components/menuComponent/MenuItemHome.vue";
     import MenuHome from "../components/menuComponent/MenuHome.vue";
-    import CommunityView from "../components/CommunityView.vue";
-    import CommunityCard from "../components/pairedComponent/CommunityCard.vue";
 
+    
     export default {
-        name: "CommunityPage",
+        name: "HomePage",
         components: {
             Header,
-            Logo,
             MenuItemHome,
-            MenuHome,
-            CommunityView,
-            CommunityCard
+            MenuHome
         }
     }
 </script>
-
+    
 <template>
     <Header imageAddress="../images/icon-cropped-white.svg"/>
     <MenuHome>
@@ -31,22 +26,13 @@
         </router-link>
         <MenuItemHome iconClass="fas fa-power-off" :key="logoutMenu">Déconnexion</MenuItemHome>
     </MenuHome>
-    <div class="community">
-        <CommunityView>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
-        </CommunityView>
-    </div>
+    <main class="profil">
+       
+    </main>
 </template>
 
-<style scoped lang="scss">
-    .community {
-        background-color: lighten(#4E5166, 60);
-        padding: 80px 0 0 83px;
-        display: flex;
-        justify-content: center;
+<style lang="scss" scoped>
+    .profil {
+
     }
 </style>

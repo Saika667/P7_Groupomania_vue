@@ -1,7 +1,7 @@
 <script>
-    import Form from "../components/Form.vue";
-    import FormInput from "../components/FormInput.vue";
-    import Button from "../components/Button.vue";
+    import Form from "../../components/formComponent/Form.vue";
+    import FormInput from "../../components/formComponent/FormInput.vue";
+    import Button from "../../components/buttonComponent/Button.vue";
     export default {
         components: {
             Form,

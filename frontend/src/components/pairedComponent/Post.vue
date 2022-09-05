@@ -1,5 +1,5 @@
 <script>
-    import ProfilImage from "../components/ProfilImage.vue";
+    import ProfilImage from "../../components/ProfilImage.vue";
     export default {
     components: { ProfilImage,}
 }
@@ -31,7 +31,7 @@
             <div class="post-main-descrip">
                 <p>mon titre de post</p>
             </div>
-           <img src="../../public/images/worker.jpg" alt="" />
+           <img src="../../../public/images/worker.jpg" alt="" />
         </div>
 
         <div class="post-footer">

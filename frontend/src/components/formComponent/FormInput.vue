@@ -17,9 +17,6 @@
             };
         },
         methods: {
-            onChange: function() {
-                console.log(this.value);
-            },
             validateField: function() {
                 switch(this.type) {
                     case 'password':

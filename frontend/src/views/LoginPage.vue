@@ -1,20 +1,20 @@
 <script>
-import LoginForm from "../components/LoginForm.vue";
-import Menu from "../components/Menu.vue";
-import MenuItem from "../components/MenuItem.vue";
-import Logo from "../components/Logo.vue";
-import Footer from "../components/baseComponents/Footer.vue";
-// Création du composant principal App
-export default {
+  import LoginForm from "../components/pairedComponent/LoginForm.vue";
+  import Menu from "../components/menuComponent/Menu.vue";
+  import MenuItem from "../components/menuComponent/MenuItem.vue";
+  import Logo from "../components/Logo.vue";
+  import Footer from "../components/baseComponents/Footer.vue";
+  // Création du composant principal App
+  export default {
     name: "LoginPage",
     components: {
-    LoginForm,
-    Menu,
-    MenuItem,
-    Logo,
-    Footer,
-}
-}
+      LoginForm,
+      Menu,
+      MenuItem,
+      Logo,
+      Footer,
+    }
+  }
 </script>
 
 <template>
@@ -28,7 +28,7 @@ export default {
     <!-- Y a t il mieux ?-->
     <Logo imageAddress="../images/icon-left-font-monochrome-white.svg"/>
     <Menu>
-        <MenuItem href="/" v-bind:isActive="true">Se connecter</MenuItem>
+        <MenuItem href="/login" v-bind:isActive="true">Se connecter</MenuItem>
         <MenuItem href="/register">S'inscrire</MenuItem>
     </Menu>
     <LoginForm></LoginForm>

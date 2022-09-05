@@ -1,7 +1,7 @@
 <script>
-import RegistrationForm from "../components/RegistrationForm.vue";
-import Menu from "../components/Menu.vue";
-import MenuItem from "../components/MenuItem.vue";
+import RegistrationForm from "../components/pairedComponent/RegistrationForm.vue";
+import Menu from "../components/menuComponent/Menu.vue";
+import MenuItem from "../components/menuComponent/MenuItem.vue";
 import Logo from "../components/Logo.vue";
 import Footer from "../components/baseComponents/Footer.vue";
 // Création du composant principal App
@@ -22,7 +22,7 @@ export default {
     <!-- v-bind sur une props car on passe un bool et non une string -->
     <Logo imageAddress="../images/icon-left-font-monochrome-white.svg"/>
     <Menu>
-      <MenuItem href="/">Se connecter</MenuItem>
+      <MenuItem href="/login">Se connecter</MenuItem>
       <MenuItem href="/register" v-bind:isActive="true">S'inscrire</MenuItem>
     </Menu>
     <RegistrationForm></RegistrationForm>

@@ -4,10 +4,11 @@ import RegisterPage from "@/views/RegisterPage.vue";
 import ForgottenPasswordPage from "@/views/ForgottenPasswordPage.vue";
 import HomePage from "@/views/HomePage.vue";
 import CommunityPage from "@/views/CommunityPage.vue";
+import ProfilPage from "@/views/ProfilPage.vue";
 
 const routes = [
     {
-        path: "/",
+        path: "/login",
         name: "login",
         component: LoginPage,
         meta: {
@@ -44,6 +45,14 @@ const routes = [
         component: CommunityPage,
         meta: {
             title: "Communauté"
+        },
+    },
+    {
+        path: "/profil",
+        name: "profil",
+        component: ProfilPage,
+        meta: {
+            title: "Mon Profil"
         }
     }
 ];

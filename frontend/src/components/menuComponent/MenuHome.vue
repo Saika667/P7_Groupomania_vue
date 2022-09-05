@@ -39,9 +39,10 @@
         position: fixed;
         top: 0;
         bottom: 0;
-        border: 1px blue solid;
+        z-index: 4;
         width: 240px;
         background-color: #FFFFFF;
+
         &:not(.animation) {
             left: -157px;
         }
@@ -57,12 +58,13 @@
             height: 70px;
             display: flex;
             justify-content: space-between;
-            background-color: darken(#FD2D01, 10);
+            background-color: #FD2D01;
 
             embed {
                 width: 150px;
                 z-index: 1;
             }
+            
             div {
                 font-size: 35px;
                 display: flex;
@@ -76,7 +78,7 @@
         }
 
         &-menu {
-            border: 1px green solid;
+            //border: 1px green solid;
             background-color: #FFFFFF;
             ul {
                 list-style-type: none;

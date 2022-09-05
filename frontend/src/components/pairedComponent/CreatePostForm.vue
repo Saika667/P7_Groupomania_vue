@@ -1,7 +1,7 @@
 <script>
-    import Button from "../components/Button.vue";
-    import ProfilImage from "../components/ProfilImage.vue";
-    import ButtonSubmit from "../components/ButtonSubmit.vue";
+    import Button from "../../components/buttonComponent/Button.vue";
+    import ProfilImage from "../../components/ProfilImage.vue";
+    import ButtonSubmit from "../../components/buttonComponent/ButtonSubmit.vue";
     export default {
         data() {
             return {

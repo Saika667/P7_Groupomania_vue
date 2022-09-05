@@ -5,8 +5,9 @@
 </script>
 
 <template>
-    <button>
-        <router-link v-slot="button" v-bind:to="url">{{ label }}</router-link>
+    <button type="button">
+        <span v-if="!url" v-on:click="this.$emit('callback-event')">{{ label }}</span>
+        <router-link v-slot="button" v-if="url" v-bind:to="url">{{ label }}</router-link>
     </button>
 </template>
 
