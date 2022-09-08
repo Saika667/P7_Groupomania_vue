@@ -65,7 +65,7 @@
 <style scoped lang="scss">
     .post {
         width: 70%;
-        margin: 10px auto;
+        margin: 20px auto;
         border-radius: 10px;
         color: #4E5166;
         background-color: white;
