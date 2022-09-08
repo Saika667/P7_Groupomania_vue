@@ -8,6 +8,12 @@ import CreatePostForm from "../components/pairedComponent/CreatePostForm.vue";
 
 export default {
     name: "HomePage",
+    data: function() {
+        return {
+            apiUrl: "http://localhost:3000/api",
+            posts: []
+        }
+    },
     components: {
         Header,
         Logo,
@@ -15,6 +21,25 @@ export default {
         MenuItemHome,
         MenuHome,
         CreatePostForm
+    },
+    // Exécuté quand composant crée mais pas affiché
+    async created() {
+        const bearer = localStorage.getItem('userToken');
+        const self = this;
+        fetch(`${this.apiUrl}/posts`, {
+            method: "GET",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${bearer}`
+            },                
+        }).then(function(res) {
+            if (res.ok) {
+                return res.json();
+            }
+        }).then(function(res) {
+            self.posts = res;
+        })
     }
 }
 </script>
@@ -23,17 +48,17 @@ export default {
     <Header imageAddress="../images/icon-cropped-white.svg"/>
     <MenuHome>
         <router-link to="/profil">
-            <MenuItemHome iconClass="fas fa-user" :key="profileMenu">Mon profil</MenuItemHome>
+            <MenuItemHome iconClass="fas fa-user">Mon profil</MenuItemHome>
         </router-link>
-        <MenuItemHome iconClass="fas fa-bell" :key="logoutMenu">Mes notifications</MenuItemHome>
+        <MenuItemHome iconClass="fas fa-bell">Mes notifications</MenuItemHome>
         <router-link to="/community">
-            <MenuItemHome iconClass="fas fa-users" :key="logoutMenu">Communauté</MenuItemHome>
+            <MenuItemHome iconClass="fas fa-users">Communauté</MenuItemHome>
         </router-link>
-        <MenuItemHome iconClass="fas fa-power-off" :key="logoutMenu">Déconnexion</MenuItemHome>
+        <MenuItemHome iconClass="fas fa-power-off">Déconnexion</MenuItemHome>
     </MenuHome>
     <main class="news">
         <CreatePostForm></CreatePostForm>
-        <Post></Post>
+        <Post v-for="post in posts" v-bind:post="post"></Post>
     </main>
 </template>
 

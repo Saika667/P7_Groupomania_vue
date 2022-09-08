@@ -15,7 +15,7 @@
         height: 70px;
         display: flex;
         z-index: 2;
-        position: absolute;
+        //position: absolute;
         align-items: center;
         justify-content: space-between;
         padding: 0 20px;

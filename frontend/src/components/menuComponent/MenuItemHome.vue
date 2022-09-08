@@ -7,6 +7,11 @@
 </script>
 
 <template>
+    <!--
+    lors de l'appel du composant dans une page, il faut mettre l'icone font awesome dans les attributs comme suit :
+    <MenuItemHome iconClass="fas fa-user">Mon profil</MenuItemHome>
+    iconClass="fas fa-nom-icon"
+    -->
     <li>
         <div>
             <font-awesome-icon v-bind:icon="iconClass"/>

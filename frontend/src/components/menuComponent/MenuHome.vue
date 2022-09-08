@@ -17,8 +17,11 @@
 </script>
 
 <template>
-    <!-- v-bind:class { extended: this.extended } = si data extended du component = true alors 
-        class extended ajoutée -->
+    <!-- 
+    v-bind:class { isExtended: this.isExtended } = si data isExtended du component = true alors class isExtended ajoutée
+    canAnimate initialisé à false pour qu'il n'y ai pas d'animatio au chargement de la page
+    ajout de :not(.animation) pour indiquer l'état initial du menu (-157px), c'est quand l'élément n'a pas la class animation
+    -->
     <div class="container" v-bind:class="{ isExtended: this.isExtended, animation: this.canAnimate }">
         <div class="container-header">
             <embed src="../images/icon-left-font-monochrome-white.svg"/>

@@ -18,13 +18,13 @@
     <Header imageAddress="../images/icon-cropped-white.svg"/>
     <MenuHome>
         <router-link to="/profil">
-            <MenuItemHome iconClass="fas fa-user" :key="profileMenu">Mon profil</MenuItemHome>
+            <MenuItemHome iconClass="fas fa-user">Mon profil</MenuItemHome>
         </router-link>
-        <MenuItemHome iconClass="fas fa-bell" :key="logoutMenu">Mes notifications</MenuItemHome>
+        <MenuItemHome iconClass="fas fa-bell">Mes notifications</MenuItemHome>
         <router-link to="/community">
-            <MenuItemHome iconClass="fas fa-users" :key="logoutMenu">Communauté</MenuItemHome>
+            <MenuItemHome iconClass="fas fa-users">Communauté</MenuItemHome>
         </router-link>
-        <MenuItemHome iconClass="fas fa-power-off" :key="logoutMenu">Déconnexion</MenuItemHome>
+        <MenuItemHome iconClass="fas fa-power-off">Déconnexion</MenuItemHome>
     </MenuHome>
     <main class="profil">
        

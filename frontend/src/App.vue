@@ -27,7 +27,7 @@ export default {
     cursor: pointer;
   }
   #app {
-    height: 100vh;
+    //height: 100vh;
   }
   .preload {
     animation: none;

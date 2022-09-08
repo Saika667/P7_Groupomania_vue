@@ -10,7 +10,37 @@
         },
         data: function() {
             return {
-                departments: ['Choisir un département','Administratif','Commercial', 'Direction', 'Logistique', 'Maintenance', 'Marketing', 'Production', 'Qualité', 'Recherche et développement']
+                departments: ['Choisir un département','Administratif','Commercial', 'Direction', 'Logistique', 'Maintenance', 'Marketing', 'Production', 'Qualité', 'Recherche et développement'],
+                apiUrl: "http://localhost:3000/api"
+            }
+        },
+        methods: {
+            signup: async function() {
+                const lastName = document.getElementById('nom').value;
+                const firstName = document.getElementById('prenom').value;
+                const profileImage = document.getElementById('profil-image').value;
+                const job = document.getElementById('poste').value;
+                const department = document.getElementById('department').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const aboutMe = document.getElementById('about-me').value;
+                
+                fetch(`${this.apiUrl}/auth/signup`, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({lastName, firstName, profileImage, job, department, email, password, aboutMe})
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(res) {
+                    if (res.token) {
+                        localStorage.setItem('userToken', res.token);
+                    }
+                })
             }
         }
     }
@@ -29,7 +59,7 @@
         <FormInput inputId="profil-image" label="Photo de profil" type="file" iconClass="fas fa-camera" />
 
         <FormInput inputId="poste" label="Poste occupé" type="text" iconClass="fas fa-briefcase"/>
-        <select name="" id="">
+        <select name="" id="department">
             <option v-for="department in departments" v-bind:value="department">{{department}}</option>
         </select>
 
@@ -38,8 +68,8 @@
         <FormInput inputId="password-confirmation" label="Confirmation du mot de passe" type="password" iconClass="fas fa-lock"/>
 
         <!--<FormInput inputId="bio" label="A propos de moi ..." type="text" />-->
-        <textarea placeholder="A propos de moi..."></textarea>
-        <Button label="S'inscrire" url="/home"/>
+        <textarea placeholder="A propos de moi..." id="about-me"></textarea>
+        <Button label="S'inscrire" @callback-event="signup"/>
     </Form>
 </template>
 

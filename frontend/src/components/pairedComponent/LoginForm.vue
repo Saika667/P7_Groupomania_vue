@@ -14,15 +14,30 @@
             };
         },
         methods: {
+            /*
+            On récupère les valeurs des champs email et mot de passe puis on fait un appel API via fetch
+            on utilise la méthode POST et on lui passe dans le corps de la requete un objet avec email et password
+            email et password sont des raccourcis on pourrait aussi le noté comme suit :
+            body: JSON.stringify({
+                email : email, (valeur de la variable email) 
+                password : password (valeur de la variable password)
+            })
+            Le premier then sert à savoir si le statut est ok et retourne la réponse de l'API dans un objet JSON
+            La réponse de l'API est composé d'un userId et d'un token
+            Dans le deuxième then récupère le token et l'enregistre dans le local storage avec pour clé userToken
+            cela permet à l'utilisateur de ne pas avoir à se reconnecter à chaque changement de page
+            */
             login: async function() {
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
+                // Sauvegarde du contexte pour utilisation dans .then (autre contexte)
+                const self = this;
                 
-                const res = fetch(`${this.apiUrl}/auth/login`, {
+                fetch(`${this.apiUrl}/auth/login`, {
                     method: "POST",
                     headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({email, password})
                 }).then(function(res) {
@@ -32,6 +47,8 @@
                 }).then(function(res) {
                     if (res.token) {
                         localStorage.setItem('userToken', res.token);
+                        // On redirige vers la page /home
+                        self.$router.push('/home');
                     }
                 })
             }
@@ -40,6 +57,11 @@
 </script>
 
 <template>
+    <!--
+    callback-event est le nom de l'événement défini dans le composant button qui fait appel à une méthode du parent
+    ici loginForm
+    cet événement appel la méthode "login"
+    -->
     <Form>
         <h2>Connexion à votre compte</h2>
         <hr />

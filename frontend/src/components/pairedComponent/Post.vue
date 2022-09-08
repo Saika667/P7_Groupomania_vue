@@ -1,8 +1,14 @@
 <script>
     import ProfilImage from "../../components/ProfilImage.vue";
     export default {
-    components: { ProfilImage,}
-}
+        components: { ProfilImage,},
+        props: ['post'],
+        data: function() {
+            return {
+                hasImage: this.post.imageUrl !== ''
+            }
+        }
+    }
 </script>
 
 <template>
@@ -11,12 +17,13 @@
             <div class="post-header-profil">
                 <ProfilImage></ProfilImage>
                 <div class="post-header-profil-identity">
-                    <h2>Nom Prénom</h2>
+                    <h2>{{ post.user.lastName }} {{ post.user.firstName }}</h2>
                     <div class="post-header-profil-identity-job">
                         <font-awesome-icon icon="fas fa-briefcase"/>
-                        <p>Métier - Département</p>
+                        <p>{{ post.user.job }} - {{ post.user.department }}</p>
                     </div>
                     <p class="post-header-profil-identity-timer">
+                        <!-- TODO à calculer -->
                         Il y a <span>17h</span>
                     </p>
                 </div>
@@ -29,9 +36,10 @@
 
         <div class="post-main">
             <div class="post-main-descrip">
-                <p>mon titre de post</p>
+                <p>{{ post.content }}</p>
             </div>
-           <img src="../../../public/images/worker.jpg" alt="" />
+            <!-- Vérifier src avec une route différente de fakeroot -->
+           <img v-if="hasImage" v-bind:src="post.imageUrl" alt="" />
         </div>
 
         <div class="post-footer">

@@ -11,8 +11,11 @@
 </script>
 
 <template>
+    <!--
+    Le changement de la valeur de isActive se fait au moment de l'appel du composant (fichier finissant en "page")
+    -->
     <li v-bind:class="isActive ? 'active' : ''">
-        <!-- Remplace <a href=""></a> pour faire un lien dans vue -->
+        <!-- Router-link remplace <a href=""></a> pour faire un lien dans vue -->
         <router-link v-bind:to="href">
             <slot></slot>
         </router-link>

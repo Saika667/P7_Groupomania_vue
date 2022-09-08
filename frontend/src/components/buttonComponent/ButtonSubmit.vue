@@ -6,12 +6,8 @@
 
 <template>
     <div class="container">
-        <input type="submit" class="container-button" v-bind:value="label"/>
+        <button type="button" class="container-button" v-on:click="this.$emit('callback-event')">{{ label }}</button>
     </div>
-    
-    <!--<button>
-        <router-link v-slot="button" v-bind:to="url">{{ label }}</router-link>
-    </button>-->
 </template>
 
 <style scoped lang="scss">
@@ -44,12 +40,5 @@
         100% {
             background: linear-gradient(167deg, rgba(78,81,102,1) 10%, rgba(253,45,1,1) 60%, rgba(255,215,215,1) 100%);
         }
-    }*/
-    /*button {
-        background-color: #FD2D01;
-        width: fit-content;
-        font-weight: bold;
-        box-shadow: 0 10px 18px 0 rgb(0 0 0 / 17%);
-        border: none;*/
-       
+    }*/       
 </style>

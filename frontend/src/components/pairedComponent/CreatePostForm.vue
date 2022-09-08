@@ -5,7 +5,10 @@
     export default {
         data() {
             return {
-                writePost: false
+                writePost: false,
+                apiUrl: "http://localhost:3000/api",
+                // Remplir user pour afficher nom + prénom
+                user: null
             }
         },
         components: { 
@@ -16,12 +19,42 @@
         methods: {
             toggleWritePost: function() {
                 this.writePost = !this.writePost;
+            },
+            createPost: async function() {
+                const content = document.getElementById('content').value;
+                const imageUrl = document.getElementById('image').value;
+                const bearer = localStorage.getItem('userToken');
+
+                fetch(`${this.apiUrl}/posts`, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                    body: JSON.stringify({content, imageUrl})
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(res) {
+                    // TODO affichage succès + mise à jour liste des posts en homepage
+                    console.log(res);
+                })
             }
         }
     }
 </script>
 
 <template>
+    <!--
+    ajout de l'événement click sur le bouton "ajouter", liaison de la méthode toggleWritePost pour changer la valeur 
+    boolean de writePost à chaque fois qu'elle est appelé
+    writePost sert à modifier le bouton ajouter ou annuler avec v-show
+    writePost sert aussi à ajouter la classe expanded pour le formulaire qui passe la height de 0 à 1000px avec 
+    une transition
+    par défaut le formulaire n'est pas afficher
+    -->
     <div class="create-post">
         <div class="create-post-header">
             <div class="create-post-header-profil">
@@ -53,12 +86,12 @@
 
         <form class="create-post-form" v-bind:class="{expanded:writePost}">
             <h3>Ajouter une publication</h3>
-            <textarea placeholder="Description de la publication"></textarea>
+            <textarea placeholder="Description de la publication" id="content"></textarea>
             <label class="create-post-form-file">
-                <input type="file"/>
+                <input type="file" id="image"/>
                 <font-awesome-icon icon="fas fa-file-image"/>
             </label>
-            <ButtonSubmit label="Publier" />
+            <ButtonSubmit label="Publier" @callback-event="createPost"/>
         </form>
     </div>
 </template>

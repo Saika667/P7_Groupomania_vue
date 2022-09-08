@@ -36,14 +36,26 @@
 <template>
     <div class="inputContainer">
         <div v-if="iconClass" class="inputContainer-icon">
-            <!-- Affiche le composant font awesome seulement si iconClass a été passé au FormInput 
-                 L'attribut icon est l'attribut remplaçant la class lors d'une utilisation sans framework -->
+            <!-- 
+            Affiche le composant font awesome seulement si iconClass a été passé au FormInput 
+            L'attribut icon est l'attribut remplaçant la class lors d'une utilisation sans framework 
+            -->
             <font-awesome-icon v-bind:icon="iconClass" v-bind:class="isFocused ? 'focused' : ''"/>
         </div>
-        <input class="form-input" v-bind:id="inputId" v-bind:type="type" 
-                v-bind:placeholder="label" v-model="value" v-on:change="validateField()"
-                v-on:focusin="toggleInputFocus" v-on:focusout="toggleInputFocus"
-                />
+        <!--
+        ajout de l'événement focus in et focus out pour appeler la méthode toggleInputFocus pour changer l'état de 
+        "isFocused"
+        permet d'appliquer ou non une class "focused" sur le font-awesome avec v-bind
+        -->
+        <input class="form-input" 
+            v-bind:id="inputId" 
+            v-bind:type="type" 
+            v-bind:placeholder="label" 
+            v-model="value" 
+            v-on:change="validateField()"
+            v-on:focusin="toggleInputFocus" 
+            v-on:focusout="toggleInputFocus"
+            />
     </div>
 </template>
 
