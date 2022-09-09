@@ -5,6 +5,7 @@
         components: { 
             ProfilImage,
         },
+        props: ['user']
     }
 </script>
 
@@ -15,24 +16,23 @@
                 <ProfilImage></ProfilImage>
                 <div class="card-border-identity-descrip">
                     <div class="card-border-identity-descrip-name">
-                        <h2>Nom</h2>
-                        <h2>Prénom</h2>
+                        <h2>{{ user.lastName}} {{user.firstName}}</h2>
                     </div>
                 </div>
             </div>
             <div class="card-border-work">
                 <div>
                     <span>Poste :</span>
-                    <p>Technicien de laboratoire de controle qualite</p>
+                    <p>{{user.job}}</p>
                 </div>
                 <div>
                     <span>Service :</span>
-                    <p>Laboratoire de contrôle qualité</p>
+                    <p>{{user.department}}</p>
                 </div>
             </div>
             <div class="card-border-bio">
                 <span>Biographie :</span> 
-                <p>Agé de 42 ans, j'ai 10 ans d'expérience dans ce secteur d'activité</p>
+                <p>{{user.aboutMe}}</p>
             </div>
             <embed src="../images/icon-left-cropped.svg"/>
         </div>

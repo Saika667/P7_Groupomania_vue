@@ -23,6 +23,7 @@ exports.getAll = (req, res, next) => {
     // '_id': 0 signifie qu'on ne récupère pas cet attribut
     // sort -> Tri, -1 -> tri descendant
     // limit 20 = récupère les 20 premiers
+    //.lean() permet d'obtenir un objet javascript et pas un document mongo
     Posts.find({}, {_id: 0, __v: 0}).sort({createdDatetime : -1}).limit(20).lean()
         .then(async posts => {
             const promise = new Promise((resolve, reject) => {

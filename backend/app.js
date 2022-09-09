@@ -7,7 +7,8 @@ const app = express();
 const helmet = require('helmet');
 
 const path = require('path');
-const userRoutes = require('./routes/users');
+const authRoutes = require('./routes/auth');
+const usersRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
 
 // Récupération de la config via le .env situé dans le dossier config
@@ -58,7 +59,8 @@ app.use(helmet({
 // Appliquer le limiteur
 app.use(limiter);
 
-app.use('/api/auth', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
 
 //utilisation du middleware static fournit par express

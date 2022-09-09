@@ -15,6 +15,32 @@
             MenuHome,
             CommunityView,
             CommunityCard
+        },
+        data: function() {
+            return {
+                apiUrl: "http://localhost:3000/api",
+                users: [],
+            }
+        },
+        async created() {
+            const bearer = localStorage.getItem('userToken');
+            const self = this;
+
+            fetch(`${this.apiUrl}/users`, {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${bearer}`
+                },
+            }).then(function(res) {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(function(res) {
+                self.users = res;
+                console.log(self.users);
+            })   
         }
     }
 </script>
@@ -33,11 +59,7 @@
     </MenuHome>
     <div class="community">
         <CommunityView>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
-            <CommunityCard></CommunityCard>
+            <CommunityCard v-for="user in users" v-bind:user="user"></CommunityCard>
         </CommunityView>
     </div>
 </template>
