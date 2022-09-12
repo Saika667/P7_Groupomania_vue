@@ -39,7 +39,6 @@
                 }
             }).then(function(res) {
                 self.users = res;
-                console.log(self.users);
             })   
         }
     }
@@ -70,5 +69,6 @@
         padding: 80px 0 0 83px;
         display: flex;
         justify-content: center;
+        height: calc(100vh - 80px);
     }
 </style>

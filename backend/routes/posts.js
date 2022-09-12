@@ -5,9 +5,11 @@ const express = require('express');
 const router = express.Router();
 //import de la middleware
 const auth = require('../middlewares/auth');
+//import multer
+const multer = require('../middlewares/multer-config');
 const postsCtrl = require('../controllers/posts');
 
-router.post('/', auth, postsCtrl.create);
+router.post('/', auth, multer, postsCtrl.create);
 router.get('/', auth, postsCtrl.getAll);
 
 module.exports = router;

@@ -11,14 +11,43 @@
         data: function() {
             return {
                 departments: ['Choisir un département','Administratif','Commercial', 'Direction', 'Logistique', 'Maintenance', 'Marketing', 'Production', 'Qualité', 'Recherche et développement'],
-                apiUrl: "http://localhost:3000/api"
+                apiUrl: "http://localhost:3000/api",
+                password: '',
+                hasMinimumLength: false,
+                hasNumber: false,
+                hasLowercase: false,
+                hasUppercase: false,
+                hasSpecial: false,
+                isPasswordOk: false,
             }
+        },
+        mounted() {
+            // Une fois les composants montés, on watch (surveiller les changements) de valeur de la data "value"
+            // Du composant enfant (FormInput) ayant une ref = à password
+            this.$watch(
+                // Argument de la fonction watch correspondant au chemin de la variable à watch (ici la value du FormInput 
+                // ayant pour ref : password)
+                "$refs.password.value",
+                function() {
+                    let password = this.$refs.password.value;
+                    this.hasMinimumLength = password.length >= 8;
+                    this.hasNumber = /\d/.test(password);
+                    this.hasLowercase = /[a-z]/.test(password);
+                    this.hasUppercase = /[A-Z]/.test(password);
+                    this.hasSpecial = /[!@#$%^&*)(+=._-]/.test(password);
+                    if(this.hasMinimumLength && this.hasNumber && this.hasLowercase &&
+                     this.hasUppercase && this.hasSpecial) {
+                        this.isPasswordOk = true;
+                    }
+                    console.log(this.isPasswordOk);
+                }
+            )
         },
         methods: {
             signup: async function() {
                 const lastName = document.getElementById('nom').value;
                 const firstName = document.getElementById('prenom').value;
-                const profileImage = document.getElementById('profil-image').value;
+                const profileImage = document.getElementById('profil-image').files[0].name; ;
                 const job = document.getElementById('poste').value;
                 const department = document.getElementById('department').value;
                 const email = document.getElementById('email').value;
@@ -64,7 +93,14 @@
         </select>
 
         <FormInput inputId="email" label="Email" type="email" iconClass="fas fa-envelope"/>
-        <FormInput inputId="password" label="Mot de passe" type="password" iconClass="fas fa-lock"/>
+        <FormInput inputId="password" label="Mot de passe" type="password" iconClass="fas fa-lock" ref="password"/>
+        <small>Votre mot de passe doit contenir au moins :<br/>
+              <span :class="hasMinimumLength ? 'has_required' : ''">8 caractères</span>,<br/>
+              <span :class="hasLowercase ? 'has_required' : ''">1 lettre minuscule</span>,<br/>
+              <span :class="hasUppercase ? 'has_required' : ''">1 lettre majuscule</span>,<br/>
+              <span :class="hasNumber ? 'has_required' : ''">1 chiffre</span>,<br/>
+              <span :class="hasSpecial ? 'has_required' : ''">1 caractère spécial</span>
+        </small>
         <FormInput inputId="password-confirmation" label="Confirmation du mot de passe" type="password" iconClass="fas fa-lock"/>
 
         <!--<FormInput inputId="bio" label="A propos de moi ..." type="text" />-->
@@ -82,6 +118,10 @@
     }
     .name {
         display: flex;
+    }
+    .has_required {
+        text-decoration: line-through;
+        color: #689868;
     }
     select {
         height: 35px;

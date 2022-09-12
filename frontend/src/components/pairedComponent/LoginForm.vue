@@ -47,6 +47,7 @@
                 }).then(function(res) {
                     if (res.token) {
                         localStorage.setItem('userToken', res.token);
+                        localStorage.setItem('userId', res.userId);
                         // On redirige vers la page /home
                         self.$router.push('/home');
                     }

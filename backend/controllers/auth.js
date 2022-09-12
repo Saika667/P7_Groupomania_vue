@@ -10,10 +10,19 @@ exports.signup =  (req, res, next) => {
     //hachage du mot de passe
     bcrypt.hash(req.body.password, 10)
     .then( hash => {
+        let lastName = req.body.lastName.charAt(0).toUpperCase() + req.body.lastName.slice(1);
+        let firstName = req.body.firstName.charAt(0).toUpperCase() + req.body.firstName.slice(1);
+        let job = req.body.job.charAt(0).toUpperCase() + req.body.job.slice(1);
+        delete req.body.lastName;
+        delete req.body.firstName;
         delete req.body.password;
+        delete req.body.job;
         //création d'une nouvelle instance du modèle user avec "new Users"
         const user = new Users({
             password: hash,
+            lastName,
+            firstName,
+            job,
             ...req.body
         });
         // méthode save permet d'enregistrer l'objet dans la base de donnée et retourne une promise

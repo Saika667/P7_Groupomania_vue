@@ -3,9 +3,11 @@ const express = require('express');
 //création d'un routeur avec la méthode router()
 //cela permet de faire router.post, router.get etc au lieu de app.post, app.get etc
 const router = express.Router();
+//import multer
+const multer = require('../middlewares/multer-config');
 const authCtrl = require('../controllers/auth');
 
-router.post('/signup', authCtrl.signup);
+router.post('/signup', multer, authCtrl.signup);
 router.post('/login', authCtrl.login);
 router.post('/logout', authCtrl.logout);
 

@@ -6,3 +6,13 @@ exports.getAll = (req, res, next) => {
             res.status(200).json(users);
         })
 };
+
+exports.getOne = (req, res, next) => {
+    Users.findOne({_id: req.params.userId})
+        .then(user => {
+            res.status(200).json({user});
+        })
+        .catch(error => { 
+            res.status(400).json({ error });
+        })
+}

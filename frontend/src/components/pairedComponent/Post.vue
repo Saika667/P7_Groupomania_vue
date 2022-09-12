@@ -5,7 +5,13 @@
         props: ['post'],
         data: function() {
             return {
-                hasImage: this.post.imageUrl !== ''
+                hasImage: this.post.imageUrl !== '',
+                isVisible: false
+            }
+        },
+        methods: {
+            toggleVisibility() {
+                this.isVisible = !this.isVisible;
             }
         }
     }
@@ -29,8 +35,16 @@
                 </div>
             </div>
             
-            <div class="post-header-menu">
+            <div class="post-header-menu" v-on:click="toggleVisibility">
                 <font-awesome-icon icon="fas fa-ellipsis-vertical" />
+                <div class="post-header-menu-content" v-bind:class="{isVisible: this.isVisible}">
+                    <div class="post-header-menu-content-item">
+                        <span>Modifier</span>
+                    </div>
+                    <div class="post-header-menu-content-item">
+                        <span>Supprimer</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -69,6 +83,7 @@
         border-radius: 10px;
         color: #4E5166;
         background-color: white;
+        position: relative;
         //box-shadow: 0px 0px 7px 0px #FD2D01;
         padding: 20px;
 
@@ -109,6 +124,35 @@
                 align-items: center;
                 font-size: 20px;
                 cursor: pointer;
+
+                &-content {
+                    display: none;
+                    flex-direction: column;
+                    box-shadow: 0 10px 18px 0 rgb(0 0 0 / 17%);
+                    position: absolute;
+                    top: 60px;
+                    right: -40px;
+                    background-color: lighten(#4E5166, 60);
+                    &.isVisible {
+                        display: flex;
+                    }
+
+                    &-item {
+                        display: flex;
+                        justify-content: center;
+
+                        span {
+                            font-size: 15px;
+                            padding: 5px 8px;
+                            text-align: center;
+                        }
+
+                        &:hover {
+                            box-shadow: 0 10px 18px 0 rgb(0 0 0 / 17%);
+                            font-weight: bold;
+                        }
+                    }
+                }
             }
         }
 

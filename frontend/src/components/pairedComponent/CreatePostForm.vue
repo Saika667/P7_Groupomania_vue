@@ -2,13 +2,13 @@
     import Button from "../../components/buttonComponent/Button.vue";
     import ProfilImage from "../../components/ProfilImage.vue";
     import ButtonSubmit from "../../components/buttonComponent/ButtonSubmit.vue";
+import { createDOMCompilerError } from "@vue/compiler-dom";
     export default {
         data() {
             return {
                 writePost: false,
                 apiUrl: "http://localhost:3000/api",
-                // Remplir user pour afficher nom + prénom
-                user: null
+                user: {}
             }
         },
         components: { 
@@ -42,6 +42,26 @@
                     console.log(res);
                 })
             }
+        },
+        async created() {
+            const userId = localStorage.getItem('userId');
+            const bearer = localStorage.getItem('userToken');
+            const self = this;
+
+            fetch(`${this.apiUrl}/users/${userId}`, {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${bearer}`
+                },
+            }).then(function(res) {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(function(res) {
+                self.user = res.user;
+                console.log(self.user);
+            });
         }
     }
 </script>
@@ -60,10 +80,10 @@
             <div class="create-post-header-profil">
                 <ProfilImage></ProfilImage>
                 <div class="create-post-header-profil-descrip">
-                    <h2>Nom Prénom</h2>
+                    <h2>{{ user.lastName }} {{ user.firstName }}</h2>
                     <div>
                         <font-awesome-icon icon="fas fa-briefcase"/>
-                        <p>Métier - Département</p>
+                        <p>{{ user.job }} - {{ user.department }}</p>
                     </div>
                 </div>
             </div>
