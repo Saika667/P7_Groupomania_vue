@@ -10,7 +10,8 @@ export default {
     name: "HomePage",
     data: function() {
         return {
-            apiUrl: "http://localhost:3000/api",
+            // Remplace "process.env" côté node
+            apiUrl: import.meta.env.VITE_API_URL,
             posts: []
         }
     },

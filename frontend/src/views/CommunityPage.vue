@@ -18,7 +18,8 @@
         },
         data: function() {
             return {
-                apiUrl: "http://localhost:3000/api",
+                // Identique à process.env côté node
+                apiUrl: import.meta.env.VITE_API_URL,
                 users: [],
             }
         },
@@ -71,4 +72,16 @@
         justify-content: center;
         height: calc(100vh - 80px);
     }
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        .community {
+            height: initial;
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

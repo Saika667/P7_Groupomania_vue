@@ -10,6 +10,7 @@ const path = require('path');
 const authRoutes = require('./routes/auth');
 const usersRoutes = require('./routes/users');
 const postsRoutes = require('./routes/posts');
+const commentsRoutes = require('./routes/comments');
 
 // Récupération de la config via le .env situé dans le dossier config
 require('dotenv').config({ path : './config/.env' });
@@ -62,6 +63,7 @@ app.use(limiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/comments', commentsRoutes);
 
 //utilisation du middleware static fournit par express
 app.use('/images', express.static(path.join(__dirname, 'images')));

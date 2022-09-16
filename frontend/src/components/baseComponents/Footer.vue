@@ -20,7 +20,7 @@
         justify-content: space-between;
         padding: 0 20px;
         color: white;
-        margin: 50px auto 0 auto;
+        margin: 0 auto;
         bottom: 0;
         left: 0;
         right: 0;

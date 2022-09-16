@@ -85,35 +85,4 @@
             }
         }
     }
-    /*.inputContainer {
-        display: flex;
-        margin: 0 auto 15px auto;
-        width: min-content;
-        border-bottom: 1px solid #FD2D01;
-        
-        &-icon {
-            display: flex;
-            align-items: center;
-            width: 50px;
-            justify-content: center;
-        }
-        input {
-            height: 40px;
-            border: none;
-            width: v-bind(inputWidth);
-            font-size: 1rem;
-            color: #4E5166;
-            &:focus {
-                outline-style: none;
-            }
-        }
-        
-        svg {
-            color: #FFD7D7;
-            font-size: 25px;
-            &.focused {
-                color: c#FD2D01;
-            }
-        }
-    }*/
 </style>

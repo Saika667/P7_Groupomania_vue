@@ -2,12 +2,15 @@
     import Button from "../../components/buttonComponent/Button.vue";
     import ProfilImage from "../../components/ProfilImage.vue";
     import ButtonSubmit from "../../components/buttonComponent/ButtonSubmit.vue";
-import { createDOMCompilerError } from "@vue/compiler-dom";
+    // Réussi à faire fonctionner en ajoutant une config dans vite.config.js
+    import jwt_decode from "jwt-decode";
+
     export default {
         data() {
             return {
                 writePost: false,
-                apiUrl: "http://localhost:3000/api",
+                // Remplace "process.env" côté node
+                apiUrl: import.meta.env.VITE_API_URL,
                 user: {}
             }
         },
@@ -41,11 +44,16 @@ import { createDOMCompilerError } from "@vue/compiler-dom";
                     // TODO affichage succès + mise à jour liste des posts en homepage
                     console.log(res);
                 })
-            }
+            },
         },
         async created() {
-            const userId = localStorage.getItem('userId');
             const bearer = localStorage.getItem('userToken');
+
+            //décodage du token avec verify
+            const decodedToken = jwt_decode(bearer);
+            //récupère le userId décodé
+            const userId = decodedToken.userId;
+
             const self = this;
 
             fetch(`${this.apiUrl}/users/${userId}`, {
@@ -246,5 +254,25 @@ import { createDOMCompilerError } from "@vue/compiler-dom";
             }
         }
     }
-   
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        .create-post {
+            padding: 10px;
+            width: 85%;
+        }
+        .create-post-header-profil {
+            padding: 0;
+
+            &-descrip h2 {
+                font-size: 14px;
+            }
+        }
+        
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

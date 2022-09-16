@@ -26,4 +26,18 @@
             padding: 0;
         }
     }
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        nav {
+            width: 340px;
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        form {
+            
+        }
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

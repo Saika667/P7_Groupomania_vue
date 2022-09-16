@@ -4,10 +4,12 @@ const mongoose = require('mongoose');
 //Schema est une fonction mise à disposition par mongoose
 const postSchema = mongoose.Schema({
   //required: true est une configuration qui indique que c'est un champs requis
-  authorId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  authorId: { type: mongoose.Schema.Types.ObjectId, required: true},
   content: { type: String, required: true},
   imageUrl: { type: String },
-  createdDatetime: { type: Date, default: Date() },
+  numberLike: { type: Number, default: 0},
+  numberComment: { type: Number, default: 0},
+  createdDatetime: { type: Date, required: true },
   updatedDatetime: { type: Date, default: null}
 });
 

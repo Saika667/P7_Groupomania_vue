@@ -11,21 +11,41 @@
 </script>
 
 <template>
-    <div>
+    <div class="logo">
         <embed v-bind:src="imageAddress"/>
     </div>
 </template>
 
 <style scoped lang="scss">
-    div {
-        height: 100px;
+    .logo {
+        height: 150px;
         overflow-y: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0 auto 30px auto;
+        padding-top: 20px;
+        
         embed {
             z-index: 2;
         }
     }
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        .logo {
+            height: 70px;
+            embed {
+                width: 80%;
+            }
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        .logo {
+            embed {
+                width: 70%;
+            }
+        }
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

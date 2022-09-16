@@ -16,7 +16,7 @@
                 <ProfilImage></ProfilImage>
                 <div class="card-border-identity-descrip">
                     <div class="card-border-identity-descrip-name">
-                        <h2>{{ user.lastName}} {{user.firstName}}</h2>
+                        <h2>{{ user.lastName}}&nbsp;{{user.firstName}}</h2>
                     </div>
                 </div>
             </div>
@@ -135,4 +135,25 @@
             }
         }
     }
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        .card {
+            width: 90%;
+        }
+        .card-border-identity-descrip {
+            margin-left: 10px;
+        }
+        .card-border-work div p {
+            font-size: 11px;
+        }
+        .card-border-bio p {
+            font-size: 10px;
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

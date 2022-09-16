@@ -7,7 +7,7 @@ const commentSchema = mongoose.Schema({
   postId: { type: mongoose.Schema.Types.ObjectId, required: true},
   authorId: { type: mongoose.Schema.Types.ObjectId, required: true },
   content: { type: String, required: true},
-  createdDatetime: { type: Date, default: Date() },
+  createdDatetime: { type: Date, required: true },
   updatedDatetime: { type: Date, default: null}
 });
 

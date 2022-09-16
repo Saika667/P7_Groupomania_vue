@@ -45,4 +45,17 @@
             flex-wrap: wrap;
         }
     }
+
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        .view {
+            width: 94%;
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

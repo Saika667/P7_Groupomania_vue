@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const likeSchema = mongoose.Schema({
   //required: true est une configuration qui indique que c'est un champs requis
   postId: { type: mongoose.Schema.Types.ObjectId, required: true},
-  authorId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  likerId: { type: mongoose.Schema.Types.ObjectId, required: true },
   status: { type: Number, required: true},
   createdDatetime: { type: Date, default: Date() }
 });

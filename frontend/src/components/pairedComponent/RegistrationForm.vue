@@ -11,7 +11,8 @@
         data: function() {
             return {
                 departments: ['Choisir un département','Administratif','Commercial', 'Direction', 'Logistique', 'Maintenance', 'Marketing', 'Production', 'Qualité', 'Recherche et développement'],
-                apiUrl: "http://localhost:3000/api",
+                // Remplace "process.env" côté node
+                apiUrl: import.meta.env.VITE_API_URL,
                 password: '',
                 hasMinimumLength: false,
                 hasNumber: false,
@@ -94,7 +95,7 @@
 
         <FormInput inputId="email" label="Email" type="email" iconClass="fas fa-envelope"/>
         <FormInput inputId="password" label="Mot de passe" type="password" iconClass="fas fa-lock" ref="password"/>
-        <small>Votre mot de passe doit contenir au moins :<br/>
+        <small class="help-password">Votre mot de passe doit contenir au moins :<br/>
               <span :class="hasMinimumLength ? 'has_required' : ''">8 caractères</span>,<br/>
               <span :class="hasLowercase ? 'has_required' : ''">1 lettre minuscule</span>,<br/>
               <span :class="hasUppercase ? 'has_required' : ''">1 lettre majuscule</span>,<br/>
@@ -143,5 +144,9 @@
             box-shadow: 0px 0px 5px 0px #FD2D01;
             outline-style: none;
         }
+    }
+    .help-password {
+        color: #4E5166;
+        font-size: 11px;
     }
 </style>

@@ -10,10 +10,45 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 /* import font awesome icon component */
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 /* import specific icons */
-import { faBarsStaggered, faBell, faBriefcase, faCamera, faComments, faEllipsisVertical, faEnvelope, faFileImage, faHeart, faLock, faMinus, faPlus, faPowerOff, faUser, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { 
+    faBarsStaggered, 
+    faBell, 
+    faBriefcase, 
+    faCamera, 
+    faClock, 
+    faClockFour, 
+    faComments, 
+    faEllipsisVertical, 
+    faEnvelope, 
+    faFileImage, 
+    faHeart, 
+    faLock, 
+    faMinus, 
+    faPaperPlane, 
+    faPlus, 
+    faPowerOff, 
+    faUser, 
+    faUsers } from '@fortawesome/free-solid-svg-icons';
 
 // Add certain icons to the font awesome library
-library.add(faEnvelope, faLock, faPowerOff, faUser, faBriefcase, faEllipsisVertical, faComments, faHeart, faCamera, faBarsStaggered, faBell, faUsers, faPlus,faFileImage, faMinus);
+library.add(
+    faEnvelope, 
+    faLock, 
+    faPowerOff, 
+    faUser, 
+    faBriefcase, 
+    faEllipsisVertical, 
+    faComments, 
+    faHeart, 
+    faCamera, 
+    faBarsStaggered, 
+    faBell, 
+    faUsers, 
+    faPlus,
+    faFileImage, 
+    faMinus, 
+    faPaperPlane, 
+    faClockFour);
 
 createApp(App)
     // Import font awesome component inside our app

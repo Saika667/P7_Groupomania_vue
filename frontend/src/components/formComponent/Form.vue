@@ -23,18 +23,19 @@
         z-index: 1;
         //box-shadow: 0 19px 73px 0 rgb(0 0 0 / 17%);
     }
-    /*form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-radius: 10px;
-        box-shadow: 0px 0px 7px 5px #ffd7d7;
-        position: relative;
-        margin: 10px auto 50px auto;
-        width: min-content;
-        background-color: white;
-        opacity: 0.85;
-        z-index: 2;
-        padding: 20px;
-    }*/
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        form {
+            width: 260px;
+            padding: 30px 40px;
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        form {
+            
+        }
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

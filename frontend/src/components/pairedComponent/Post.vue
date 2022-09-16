@@ -1,17 +1,97 @@
 <script>
     import ProfilImage from "../../components/ProfilImage.vue";
+    import Comment from "./Comment.vue";
+    import Clock from "../../components/Clock.vue";
+
     export default {
-        components: { ProfilImage,},
+        components: { 
+            ProfilImage, 
+            Comment,
+            Clock
+        },
         props: ['post'],
         data: function() {
             return {
                 hasImage: this.post.imageUrl !== '',
-                isVisible: false
+                isVisible: false,
+                isLike: this.post.hasUserLiked,
+                apiUrl: import.meta.env.VITE_API_URL,
+                contentComment: '',
+                displayComments: false,
+                comments: [],
             }
         },
         methods: {
             toggleVisibility() {
                 this.isVisible = !this.isVisible;
+            },
+            toggleLike() {
+                this.isLike = !this.isLike;
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+                fetch(`${this.apiUrl}/posts/${this.post._id}/like`, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                    body: JSON.stringify({status: this.isLike ? 1 : 0})
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(res) {
+                    self.post.numberLike = self.isLike ? self.post.numberLike + 1 : self.post.numberLike - 1;
+                    self.$forceUpdate();
+                });
+            },
+            createComment: async function() {
+                const content = this.contentComment;
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+                fetch(`${this.apiUrl}/comments/post/${this.post._id}`, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                    body: JSON.stringify({content})
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(res) {
+                    self.post.numberComment = self.post.numberComment + 1;
+                    self.contentComment = '';
+                    self.$forceUpdate();
+                })
+            },
+            showComments: async function() {
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+                //TODO ajouter catch sur tous les fetch
+                if (this.displayComments) {
+                    this.displayComments = false;
+                    return;
+                }
+                fetch(`${this.apiUrl}/comments/post/${this.post._id}`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(comments) {
+                    self.comments = comments;
+                    self.displayComments = true;
+                    self.$forceUpdate();
+                })
             }
         }
     }
@@ -30,7 +110,7 @@
                     </div>
                     <p class="post-header-profil-identity-timer">
                         <!-- TODO à calculer -->
-                        Il y a <span>17h</span>
+                        <Clock v-bind:date="post.createdDatetime"></Clock>
                     </p>
                 </div>
             </div>
@@ -58,19 +138,25 @@
 
         <div class="post-footer">
             <div class="post-footer-number">
-                <div>
+                <div class="post-footer-number-comment" v-on:click="showComments">
                     <font-awesome-icon icon="fas fa-comments" />
-                    112 commentaires
+                    {{post.numberComment}} commentaires
                 </div>
 
-                <div>
-                    30
+                <div class="post-footer-number-like" v-bind:class="{isLike: this.isLike}" v-on:click="toggleLike">
+                    {{post.numberLike}}
                     <font-awesome-icon icon="fas fa-heart" />
                 </div>
             </div>
+            <div v-if="displayComments">
+                <Comment v-for="comment of comments" v-bind:comment="comment"></Comment>
+            </div>
             <div class="post-footer-comments">
                 <ProfilImage sizeImage="40px"></ProfilImage>
-                <input type="text" placeholder="Ajouter un commentaire"/>
+                <input type="text" placeholder="Ajouter un commentaire" v-model="contentComment"/>
+                <div class="post-footer-comments-send" v-on:click="createComment">
+                    <font-awesome-icon icon="fas fa-paper-plane" />
+                </div>
             </div>
         </div>
     </article>
@@ -188,9 +274,33 @@
                 display: flex;
                 justify-content: space-between;
                 padding: 0 0 10px 0;
+                font-size: 13px;
+
+                &-comment {
+                    cursor: pointer;
+                }
+                &-like {
+                    cursor: pointer;
+                }
+                .isLike {
+                    svg {
+                        animation: like 750ms ease-in forwards;
+                    }
+                    
+                }
             }
             &-comments {
                 display: flex;
+                position: relative;
+                margin-top: 10px;
+
+                &-send {
+                    position: absolute;
+                    cursor: pointer;
+                    bottom: 13px;
+                    right: 13px;
+                }
+
                 input {
                     margin-left: 15px;
                     border-radius: 20px;
@@ -202,4 +312,35 @@
             }
         }
     }
+    @keyframes like {
+        0% {
+            transform: scale(1);
+            color: #FD2D01;
+        }
+        40% {
+            transform: scale(2);
+            filter: blur(1px);
+        }
+        75% {
+            transform: scale(1);
+            filter: blur(0);
+        }
+        100% {
+            transform: scale(1);
+            color: #FD2D01;
+        }
+    }
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        .post {
+            padding: 10px;
+            width: 85%;
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>

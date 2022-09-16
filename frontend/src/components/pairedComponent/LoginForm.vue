@@ -10,7 +10,8 @@
         },
         data: function() {
             return {
-                apiUrl: "http://localhost:3000/api"
+                // Remplace "process.env" côté node
+                apiUrl: import.meta.env.VITE_API_URL,
             };
         },
         methods: {
@@ -47,7 +48,6 @@
                 }).then(function(res) {
                     if (res.token) {
                         localStorage.setItem('userToken', res.token);
-                        localStorage.setItem('userId', res.userId);
                         // On redirige vers la page /home
                         self.$router.push('/home');
                     }
@@ -94,4 +94,15 @@
         color: #000000;
         width: fit-content;
     }
+
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        
+    }
+/*----------------------Fin Version tablette-------------------------------*/
 </style>
