@@ -2,6 +2,7 @@
     import ProfilImage from "../../components/ProfilImage.vue";
     import Comment from "./Comment.vue";
     import Clock from "../../components/Clock.vue";
+    import jwt_decode from 'jwt-decode';
 
     export default {
         components: { 
@@ -9,7 +10,7 @@
             Comment,
             Clock
         },
-        props: ['post'],
+        props: ['post', 'isAdmin'],
         data: function() {
             return {
                 hasImage: this.post.imageUrl !== '',
@@ -19,6 +20,7 @@
                 contentComment: '',
                 displayComments: false,
                 comments: [],
+                userId: ''
             }
         },
         methods: {
@@ -65,6 +67,26 @@
                 }).then(function(res) {
                     self.post.numberComment = self.post.numberComment + 1;
                     self.contentComment = '';
+                    self.refreshComments();
+                    self.$forceUpdate();
+                })
+            },
+            refreshComments: async function() {
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+                fetch(`${this.apiUrl}/comments/post/${this.post._id}`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(comments) {
+                    self.comments = comments;
                     self.$forceUpdate();
                 })
             },
@@ -93,6 +115,13 @@
                     self.$forceUpdate();
                 })
             }
+        },
+        created() {
+            const bearer = localStorage.getItem('userToken');
+            //décodage du token avec verify
+            const decodedToken = jwt_decode(bearer);
+            //récupère le userId décodé
+            this.userId = decodedToken.userId;
         }
     }
 </script>
@@ -101,7 +130,7 @@
     <article class="post">
         <div class="post-header">
             <div class="post-header-profil">
-                <ProfilImage></ProfilImage>
+                <ProfilImage v-bind:imageUrl="post.user.profileImage"></ProfilImage>
                 <div class="post-header-profil-identity">
                     <h2>{{ post.user.lastName }} {{ post.user.firstName }}</h2>
                     <div class="post-header-profil-identity-job">
@@ -115,7 +144,7 @@
                 </div>
             </div>
             
-            <div class="post-header-menu" v-on:click="toggleVisibility">
+            <div class="post-header-menu" v-on:click="toggleVisibility" v-if="isAdmin || userId === post.user._id">
                 <font-awesome-icon icon="fas fa-ellipsis-vertical" />
                 <div class="post-header-menu-content" v-bind:class="{isVisible: this.isVisible}">
                     <div class="post-header-menu-content-item">
@@ -133,7 +162,7 @@
                 <p>{{ post.content }}</p>
             </div>
             <!-- Vérifier src avec une route différente de fakeroot -->
-           <img v-if="hasImage" v-bind:src="post.imageUrl" alt="" />
+           <img v-if="post.imageUrl !== ''" v-bind:src="post.imageUrl" alt="" />
         </div>
 
         <div class="post-footer">
@@ -259,7 +288,7 @@
 
             img {
                 width: 98%;
-                object-fit: cover;
+                object-fit: contain;
                 max-height: 270px;
             }
         }

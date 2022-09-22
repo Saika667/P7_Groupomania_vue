@@ -5,6 +5,7 @@
     import MenuHome from "../components/menuComponent/MenuHome.vue";
     import CommunityView from "../components/CommunityView.vue";
     import CommunityCard from "../components/pairedComponent/CommunityCard.vue";
+    import jwt_decode from "jwt-decode";
 
     export default {
         name: "CommunityPage",
@@ -21,11 +22,16 @@
                 // Identique à process.env côté node
                 apiUrl: import.meta.env.VITE_API_URL,
                 users: [],
+                isAdmin: false
             }
         },
         async created() {
             const bearer = localStorage.getItem('userToken');
             const self = this;
+            //décodage du token avec verify
+            const decodedToken = jwt_decode(bearer);
+            //récupère le userId décodé
+            const userId = decodedToken.userId;
 
             fetch(`${this.apiUrl}/users`, {
                 method: "GET",
@@ -40,7 +46,22 @@
                 }
             }).then(function(res) {
                 self.users = res;
-            })   
+            })
+            
+            fetch(`${this.apiUrl}/users/${userId}`, {
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${bearer}`
+                },                
+            }).then(function(res) {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).then(function(res) {
+                self.isAdmin = res.user.isAdmin;
+            })
         }
     }
 </script>
@@ -59,7 +80,7 @@
     </MenuHome>
     <div class="community">
         <CommunityView>
-            <CommunityCard v-for="user in users" v-bind:user="user"></CommunityCard>
+            <CommunityCard v-for="user in users" v-bind:user="user" v-bind:isAdmin="isAdmin"></CommunityCard>
         </CommunityView>
     </div>
 </template>
@@ -75,6 +96,7 @@
 /*----------------------Version téléphone-------------------------------*/
     @media all and (max-width: 768px) {
         .community {
+            padding: 80px 0 0 0;
             height: initial;
         }
     }

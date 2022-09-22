@@ -5,7 +5,7 @@
         components: { 
             ProfilImage,
         },
-        props: ['user']
+        props: ['user', 'isAdmin'],
     }
 </script>
 
@@ -19,7 +19,16 @@
                         <h2>{{ user.lastName}}&nbsp;{{user.firstName}}</h2>
                     </div>
                 </div>
+                <div class="card-border-identity-container" v-if="isAdmin">
+                    <div class="card-border-identity-container-delete">
+                        <div class="card-border-identity-container-delete-svg">
+                            <font-awesome-icon icon="fas fa-trash-can"/>
+                        </div>
+                        <span>Supprimer</span>
+                    </div>
+                </div>
             </div>
+            
             <div class="card-border-work">
                 <div>
                     <span>Poste :</span>
@@ -81,7 +90,7 @@
                 margin: 10px auto;
 
                 &-descrip {
-                    width: 75%;
+                    width: 70%;
 
                     &-name {
                         display: flex;
@@ -89,6 +98,38 @@
                         h2 {
                             font-size: 18px;
                             width: 50%;
+                        }
+                    }
+                }
+
+                &-container {
+                    width: 90px;
+                    display: flex;
+                    justify-content: center;
+
+                    &-delete {
+                        display: flex;
+                        align-items: center;
+                        width: 33px;
+                        overflow: hidden;
+                        cursor: pointer;
+                        border: 1px solid #FD2D01;
+                        transition: all 500ms ease-in-out;
+                        border-radius: 20px;
+
+                        &-svg {
+                            padding: 5px 10px;
+                        }
+
+                        span {
+                            padding: 0 13px 0 0 ;
+                            text-decoration: none;
+                            font-weight: bold;
+                        }
+
+                        &:hover {
+                            width: 90px;
+                            transition: all 500ms ease-in-out;
                         }
                     }
                 }

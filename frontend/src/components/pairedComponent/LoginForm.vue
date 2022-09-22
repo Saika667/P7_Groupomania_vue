@@ -1,17 +1,27 @@
 <script>
-    import Form from "../../components/formComponent/Form.vue";
-    import FormInput from "../../components/formComponent/FormInput.vue";
     import Button from "../../components/buttonComponent/Button.vue";
+
     export default {
         components: {
-            Form,
-            FormInput,
             Button
         },
         data: function() {
             return {
                 // Remplace "process.env" côté node
                 apiUrl: import.meta.env.VITE_API_URL,
+                user: {
+                    email: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    },
+                    password: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    }
+                },
+                loginError: false
             };
         },
         methods: {
@@ -29,10 +39,15 @@
             cela permet à l'utilisateur de ne pas avoir à se reconnecter à chaque changement de page
             */
             login: async function() {
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
+                //const email = document.getElementById('email').value;
+                //const password = document.getElementById('password').value;
                 // Sauvegarde du contexte pour utilisation dans .then (autre contexte)
                 const self = this;
+
+                let formUser = {};
+                for (let key in this.user) {
+                    formUser[key] = this.user[key].value;
+                }
                 
                 fetch(`${this.apiUrl}/auth/login`, {
                     method: "POST",
@@ -40,7 +55,7 @@
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({email, password})
+                    body: JSON.stringify(formUser)
                 }).then(function(res) {
                     if (res.ok) {
                         return res.json();
@@ -51,32 +66,71 @@
                         // On redirige vers la page /home
                         self.$router.push('/home');
                     }
-                })
-            }
+                }).catch(function() {
+                    self.loginError = true;
+                });
+            },
+
+            toggleInputFocus: function(evt) {
+                this.user[evt.target.id].isFocused = !this.user[evt.target.id].isFocused;
+            },
         }
     }
 </script>
 
 <template>
-    <!--
-    callback-event est le nom de l'événement défini dans le composant button qui fait appel à une méthode du parent
-    ici loginForm
-    cet événement appel la méthode "login"
-    -->
-    <Form>
+    <form>
         <h2>Connexion à votre compte</h2>
         <hr />
-        <FormInput inputId="email" label="Email" type="email" iconClass="fas fa-envelope"/>
-        <FormInput inputId="password" label="Mot de passe" type="password" iconClass="fas fa-lock"/>
+
+        <div class="inputContainer">
+            <div class="inputContainer-icon">
+                <font-awesome-icon icon="fas fa-envelope"
+                    v-bind:class="user.email.isFocused ? 'focused' : ''"/>
+            </div>
+            <input class="form-input" 
+                id="email" 
+                type="email"
+                v-model="user.email.value"
+                label="Email"
+                v-on:focusin="toggleInputFocus" 
+                v-on:focusout="toggleInputFocus"
+                v-on:change="validateEmail"
+                />
+        </div>
+
+        <div class="inputContainer">
+            <div class="inputContainer-icon">
+                <font-awesome-icon icon="fas fa-lock"
+                v-bind:class="user.password.isFocused ? 'focused' : ''"/>
+            </div>
+            <input class="form-input" 
+                id="password" 
+                type="password"
+                label="Mot de passe"
+                v-model="user.password.value"
+                v-on:focusin="toggleInputFocus" 
+                v-on:focusout="toggleInputFocus"
+                v-on:change="validatePassword"
+                />
+        </div>
+
+        <small class="errorMessage" v-if="loginError">
+            Paire login/mot de passe incorrecte.
+        </small>
 
         <div class="checkbox">
             <input type="checkbox"/> Se souvenir de moi
         </div>
-
+    <!--
+        callback-event est le nom de l'événement défini dans le composant button qui fait appel à une méthode du parent
+        ici loginForm
+        cet événement appel la méthode "login"
+    -->
         <Button label="Se connecter" @callback-event="login"/>
         
         <router-link class="forgotten" to="/forgotten-password">Mot de passe oublié ?</router-link>
-    </Form>
+    </form>
 </template>
 
 <style scoped lang="scss">
@@ -94,10 +148,59 @@
         color: #000000;
         width: fit-content;
     }
+    .errorMessage {
+        color: #FD2D01;
+        font-style: italic;
+        font-size: 11px;
+    }
+    /********** FORM **********/
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 350px;
+        margin: auto;
+        border-radius: 0 15px 15px 0;
+        background-color: #FFF;
+        padding: 50px 60px;
+        box-shadow: 0px -2px 15px 5px rgb(0 0 0 / 17%);
+        position: relative;
+        z-index: 1;
+        .inputContainer {
+            display: flex;
+            margin: 0 0 15px 0;
+            align-items: center;
+            position: relative;
 
+            &-icon {
+                position: absolute;
+            }
+
+            input {
+                border: none;
+                padding: 5px 10px 5px 30px;
+                width: 100%;
+                height: 40px;
+                border-bottom: 1px solid #eaeaea;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            svg {
+                color: #FFD7D7;
+                &.focused {
+                    color: #FD2D01;
+                }
+            }
+        }
+    }
 /*----------------------Version téléphone-------------------------------*/
     @media all and (max-width: 768px) {
-        
+        form {
+            width: 260px;
+            padding: 30px 40px;
+        }
     }
 /*----------------------Fin Version téléphone-------------------------------*/
 /*----------------------Version tablette-------------------------------*/

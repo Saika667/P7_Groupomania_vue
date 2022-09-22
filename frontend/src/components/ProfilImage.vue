@@ -4,6 +4,10 @@
             sizeImage: {
                 type: String,
                 default: "50px"
+            },
+            imageUrl: {
+                type: String,
+                default: "../../images/worker.jpg"
             }
         }
     }
@@ -12,7 +16,7 @@
 <template>
     <div class="container">
         <div>
-            <img src="../../images/worker.jpg" alt=""/>
+            <img v-bind:src="imageUrl" alt=""/>
         </div>
     </div>
     
@@ -35,6 +39,11 @@
             height: v-bind(sizeImage);        
             display: flex;
             justify-content: center;
+
+            img {
+                width: 100%;
+                object-fit: cover;
+            }
         }
     }
 </style>

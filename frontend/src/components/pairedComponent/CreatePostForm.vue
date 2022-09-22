@@ -11,7 +11,11 @@
                 writePost: false,
                 // Remplace "process.env" côté node
                 apiUrl: import.meta.env.VITE_API_URL,
-                user: {}
+                user: {},
+                form: {
+                    content: "",
+                    image: ""
+                }
             }
         },
         components: { 
@@ -24,27 +28,32 @@
                 this.writePost = !this.writePost;
             },
             createPost: async function() {
-                const content = document.getElementById('content').value;
-                const imageUrl = document.getElementById('image').value;
                 const bearer = localStorage.getItem('userToken');
+                const self = this;
+                let formData = new FormData();
+                formData.append('image', this.form.image);
+                formData.append('content', this.form.content);
 
                 fetch(`${this.apiUrl}/posts`, {
                     method: "POST",
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${bearer}`
                     },
-                    body: JSON.stringify({content, imageUrl})
+                    body: formData
                 }).then(function(res) {
                     if (res.ok) {
                         return res.json();
                     }
                 }).then(function(res) {
                     // TODO affichage succès + mise à jour liste des posts en homepage
+                    self.$emit('refresh-posts');
                     console.log(res);
                 })
             },
+            getImage(event) {
+                this.form.image = event.target.files[0];
+            }
         },
         async created() {
             const bearer = localStorage.getItem('userToken');
@@ -86,7 +95,7 @@
     <div class="create-post">
         <div class="create-post-header">
             <div class="create-post-header-profil">
-                <ProfilImage></ProfilImage>
+                <ProfilImage v-bind:imageUrl="user.profileImage"></ProfilImage>
                 <div class="create-post-header-profil-descrip">
                     <h2>{{ user.lastName }} {{ user.firstName }}</h2>
                     <div>
@@ -114,9 +123,9 @@
 
         <form class="create-post-form" v-bind:class="{expanded:writePost}">
             <h3>Ajouter une publication</h3>
-            <textarea placeholder="Description de la publication" id="content"></textarea>
+            <textarea placeholder="Description de la publication" id="content" v-model="form.content"></textarea>
             <label class="create-post-form-file">
-                <input type="file" id="image"/>
+                <input type="file" id="image" v-on:change="getImage"/>
                 <font-awesome-icon icon="fas fa-file-image"/>
             </label>
             <ButtonSubmit label="Publier" @callback-event="createPost"/>
@@ -225,6 +234,8 @@
             textarea {
                 margin-bottom: 10px;
                 height: 100px;
+                width: 95%;
+                margin: auto;
                 border: none;
                 background-color: lighten(#4E5166, 60);
                 border-radius: 10px;
@@ -245,8 +256,8 @@
                 margin-bottom: 10px;
                 color: #4E5166;
                 position: absolute;
-                bottom: 47px;
-                left: 0px;
+                bottom: 40px;
+                left: 10px;
 
                 input {
                     display: none;

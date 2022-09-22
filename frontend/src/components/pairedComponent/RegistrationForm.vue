@@ -1,11 +1,8 @@
 <script>
-    import Form from "../../components/formComponent/Form.vue";
-    import FormInput from "../../components/formComponent/FormInput.vue";
     import Button from "../../components/buttonComponent/Button.vue";
+
     export default {
         components: {
-            Form,
-            FormInput,
             Button
         },
         data: function() {
@@ -19,49 +16,83 @@
                 hasLowercase: false,
                 hasUppercase: false,
                 hasSpecial: false,
-                isPasswordOk: false,
-            }
-        },
-        mounted() {
-            // Une fois les composants montés, on watch (surveiller les changements) de valeur de la data "value"
-            // Du composant enfant (FormInput) ayant une ref = à password
-            this.$watch(
-                // Argument de la fonction watch correspondant au chemin de la variable à watch (ici la value du FormInput 
-                // ayant pour ref : password)
-                "$refs.password.value",
-                function() {
-                    let password = this.$refs.password.value;
-                    this.hasMinimumLength = password.length >= 8;
-                    this.hasNumber = /\d/.test(password);
-                    this.hasLowercase = /[a-z]/.test(password);
-                    this.hasUppercase = /[A-Z]/.test(password);
-                    this.hasSpecial = /[!@#$%^&*)(+=._-]/.test(password);
-                    if(this.hasMinimumLength && this.hasNumber && this.hasLowercase &&
-                     this.hasUppercase && this.hasSpecial) {
-                        this.isPasswordOk = true;
+                user : {
+                    lastName: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    },
+                    firstName: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    },
+                    image: {
+                        value: '',
+                        isValid: true
+                    },
+                    job: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    },
+                    department: {
+                        value: '',
+                        isValid: true
+                    },
+                    email: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    },
+                    password: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    },
+                    passwordConfirmation: {
+                        value: '',
+                        isFocused: false,
+                        isValid: true
+                    },
+                    aboutMe: {
+                        value: '',
+                        isValid: true
                     }
-                    console.log(this.isPasswordOk);
                 }
-            )
+            }
         },
         methods: {
             signup: async function() {
-                const lastName = document.getElementById('nom').value;
-                const firstName = document.getElementById('prenom').value;
-                const profileImage = document.getElementById('profil-image').files[0].name; ;
-                const job = document.getElementById('poste').value;
-                const department = document.getElementById('department').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const aboutMe = document.getElementById('about-me').value;
-                
+                this.validateLastName();
+                this.validateFirstName();
+                this.validateJob();
+                this.validateDepartment();
+                this.validateImage();
+                this.validateEmail();
+                this.validatePassword();
+                this.validatePasswordConfirmation();
+                this.validateAboutMe();
+
+                if (this.user.lastName.isValid === false || this.user.firstName.isValid === false ||
+                this.user.job.isValid === false || this.user.department.isValid === false ||
+                this.user.image.isValid === false || this.user.email.isValid === false ||
+                this.user.password.isValid === false || this.user.passwordConfirmation.isValid === false ||
+                this.user.aboutMe.isValid === false) {
+                    return;
+                }
+
+                let formData = new FormData();
+                for (let key in this.user) {
+                    formData.append(key, this.user[key].value);
+                }
+
                 fetch(`${this.apiUrl}/auth/signup`, {
                     method: "POST",
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Accept': 'application/json'
                     },
-                    body: JSON.stringify({lastName, firstName, profileImage, job, department, email, password, aboutMe})
+                    body: formData
                 }).then(function(res) {
                     if (res.ok) {
                         return res.json();
@@ -71,43 +102,250 @@
                         localStorage.setItem('userToken', res.token);
                     }
                 })
-            }
+            },
+            toggleInputFocus: function(evt) {
+                this.user[evt.target.id].isFocused = !this.user[evt.target.id].isFocused;
+            },
+            onChangeProfileImage: function(event) {
+                this.user.image.value = event.target.files[0];
+            },
+            validateLastName: function() {
+                let regexName = new RegExp(/^[A-Za-z]{2,}$/);
+                if (!regexName.test(this.user.lastName.value)) {
+                    this.user.lastName.isValid = false;
+                } else {
+                    this.user.lastName.isValid = true;
+                }
+            },
+            validateFirstName: function() {
+                let regexName = new RegExp(/^[A-Za-z]{2,}$/);
+                if (!regexName.test(this.user.firstName.value)) {
+                    this.user.firstName.isValid = false;
+                } else {
+                    this.user.firstName.isValid = true;
+                }
+            },
+            validateJob: function() {
+                let regexName = new RegExp(/^[A-Za-z ]{2,}$/);
+                if (!regexName.test(this.user.job.value)) {
+                    this.user.job.isValid = false;
+                } else {
+                    this.user.job.isValid = true;
+                }
+            },
+            validateEmail: function() {
+                let regexEmail = new RegExp(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/);
+                if (!regexEmail.test(this.user.email.value)) {
+                    this.user.email.isValid = false;
+                } else {
+                    this.user.email.isValid = true;
+                }
+            },
+            validateImage: function() {
+                if (this.user.image.value == '') {
+                    this.user.image.isValid = false;
+                } else {
+                    this.user.image.isValid = true;
+                }
+            },
+            validateDepartment: function() {
+                if (this.user.department.value === 'Choisir un département') {
+                    this.user.department.isValid = false;
+                } else {
+                    this.user.department.isValid = true;
+                }
+            },
+            validatePassword: function() {
+                let password = this.user.password.value;
+                this.hasMinimumLength = password.length >= 8;
+                this.hasNumber = /\d/.test(password);
+                this.hasLowercase = /[a-z]/.test(password);
+                this.hasUppercase = /[A-Z]/.test(password);
+                this.hasSpecial = /[!@#$%^&*)(+=._-]/.test(password);
+                if(!this.hasMinimumLength || !this.hasNumber || !this.hasLowercase ||
+                    !this.hasUppercase || !this.hasSpecial) {
+                    this.user.password.isValid = false;
+                } else {
+                    this.user.password.isValid = true;
+                }
+            },
+            validatePasswordConfirmation: function() {
+                if(this.user.password.value !== this.user.passwordConfirmation.value) {
+                    this.user.passwordConfirmation.isValid = false;
+                } else {
+                    this.user.passwordConfirmation.isValid = true;
+                }
+            },
+            validateAboutMe: function() {
+                let regexAboutMe = new RegExp(/^[A-Za-zÀ-ÿ 0-9\!\.\?\,\'\(\)\-]{2,}$/);
+                if(!regexAboutMe.test(this.user.aboutMe.value)) {
+                    this.user.aboutMe.isValid = false;
+                } else {
+                    this.user.aboutMe.isValid = true;
+                }
+            },
         }
     }
 </script>
 
 <template>
-    <Form>
+    <form>
         <h2>Inscrivez-vous</h2>
         <hr />
 
         <div class="name">
-            <FormInput inputId="nom" label="Nom" type="text" iconClass="fas fa-user" inputWidth="150px"/>
-            <FormInput inputId="prenom" label="Prénom" type="text" iconClass="fas fa-user" inputWidth="150px"/>
+            <div class="field">
+                <div class="inputContainer">
+                    <div class="inputContainer-icon">
+                        <font-awesome-icon icon="fas fa-user" 
+                            v-bind:class="user.lastName.isFocused ? 'focused' : ''"/>
+                    </div>
+                    <input class="form-input" 
+                        id="lastName" 
+                        type="text" 
+                        placeholder="Nom" 
+                        v-model="user.lastName.value" 
+                        v-on:focusin="toggleInputFocus" 
+                        v-on:focusout="toggleInputFocus"
+                        v-on:change="validateLastName"
+                        />
+                </div>
+                <small class="errorMessage" v-if="!user.lastName.isValid">
+                    Nom incorrect.
+                </small>
+            </div>
+
+            <div class="field">
+                <div class="inputContainer">
+                    <div class="inputContainer-icon">
+                        <font-awesome-icon icon="fas fa-user"
+                            v-bind:class="user.firstName.isFocused ? 'focused' : ''"/>
+                    </div>
+                    <input class="form-input" 
+                        id="firstName" 
+                        type="text" 
+                        placeholder="Prénom" 
+                        v-model="user.firstName.value" 
+                        v-on:focusin="toggleInputFocus" 
+                        v-on:focusout="toggleInputFocus"
+                        v-on:change="validateFirstName"
+                        />
+                </div>
+                <small class="errorMessage" v-if="!user.firstName.isValid">
+                    Prénom incorrect.
+                </small>
+            </div>
         </div>
+        
+        <div class="inputContainer">
+            <div class="inputContainer-icon">
+                <font-awesome-icon icon="fas fa-camera"/>
+            </div>
+            <input class="form-input" 
+                id="image" 
+                type="file"
+                v-on:change="onChangeProfileImage"
+                />
+        </div>
+        <small class="errorMessage" v-if="!user.image.isValid">
+            Fichier incorrect.
+        </small>
 
-        <FormInput inputId="profil-image" label="Photo de profil" type="file" iconClass="fas fa-camera" />
+        <div class="inputContainer">
+            <div class="inputContainer-icon">
+                <font-awesome-icon icon="fas fa-briefcase" 
+                    v-bind:class="user.job.isFocused ? 'focused' : ''"/>
+            </div>
+            <input class="form-input" 
+                id="job" 
+                type="text"
+                v-model="user.job.value"
+                label="Poste occupé"
+                v-on:focusin="toggleInputFocus" 
+                v-on:focusout="toggleInputFocus"
+                v-on:change="validateJob"
+                />
+        </div>
+        <small class="errorMessage" v-if="!user.job.isValid">
+            Métier incorrect.
+        </small>
 
-        <FormInput inputId="poste" label="Poste occupé" type="text" iconClass="fas fa-briefcase"/>
-        <select name="" id="department">
+        <select name="" id="department" v-on:change="validateDepartment" v-model="user.department.value">
             <option v-for="department in departments" v-bind:value="department">{{department}}</option>
         </select>
-
-        <FormInput inputId="email" label="Email" type="email" iconClass="fas fa-envelope"/>
-        <FormInput inputId="password" label="Mot de passe" type="password" iconClass="fas fa-lock" ref="password"/>
-        <small class="help-password">Votre mot de passe doit contenir au moins :<br/>
-              <span :class="hasMinimumLength ? 'has_required' : ''">8 caractères</span>,<br/>
-              <span :class="hasLowercase ? 'has_required' : ''">1 lettre minuscule</span>,<br/>
-              <span :class="hasUppercase ? 'has_required' : ''">1 lettre majuscule</span>,<br/>
-              <span :class="hasNumber ? 'has_required' : ''">1 chiffre</span>,<br/>
-              <span :class="hasSpecial ? 'has_required' : ''">1 caractère spécial</span>
+        <small class="errorMessage" v-if="!user.department.isValid">
+            Département requis.
         </small>
-        <FormInput inputId="password-confirmation" label="Confirmation du mot de passe" type="password" iconClass="fas fa-lock"/>
 
-        <!--<FormInput inputId="bio" label="A propos de moi ..." type="text" />-->
-        <textarea placeholder="A propos de moi..." id="about-me"></textarea>
+        <div class="inputContainer">
+            <div class="inputContainer-icon">
+                <font-awesome-icon icon="fas fa-envelope"
+                    v-bind:class="user.email.isFocused ? 'focused' : ''"/>
+            </div>
+            <input class="form-input" 
+                id="email" 
+                type="email"
+                v-model="user.email.value"
+                label="Email"
+                v-on:focusin="toggleInputFocus" 
+                v-on:focusout="toggleInputFocus"
+                v-on:change="validateEmail"
+                />
+        </div>
+        <small class="errorMessage" v-if="!user.email.isValid">
+            Email incorrect.
+        </small>
+
+        <div class="inputContainer">
+            <div class="inputContainer-icon">
+                <font-awesome-icon icon="fas fa-lock"
+                v-bind:class="user.password.isFocused ? 'focused' : ''"/>
+            </div>
+            <input class="form-input" 
+                id="password" 
+                type="password"
+                label="Mot de passe"
+                v-model="user.password.value"
+                v-on:keyup="validatePassword"
+                v-on:focusin="toggleInputFocus" 
+                v-on:focusout="toggleInputFocus"
+                />
+        </div>
+        <small class="help-password">
+            Votre mot de passe doit contenir au moins :<br/>
+            <span :class="hasMinimumLength ? 'has_required' : ''">8 caractères</span>,<br/>
+            <span :class="hasLowercase ? 'has_required' : ''">1 lettre minuscule</span>,<br/>
+            <span :class="hasUppercase ? 'has_required' : ''">1 lettre majuscule</span>,<br/>
+            <span :class="hasNumber ? 'has_required' : ''">1 chiffre</span>,<br/>
+            <span :class="hasSpecial ? 'has_required' : ''">1 caractère spécial</span>
+        </small>
+
+        <div class="inputContainer">
+            <div class="inputContainer-icon">
+                <font-awesome-icon icon="fas fa-lock"
+                    v-bind:class="user.passwordConfirmation.isFocused ? 'focused' : ''"/>
+            </div>
+            <input class="form-input" 
+                id="passwordConfirmation" 
+                type="password"
+                v-model="user.passwordConfirmation.value"
+                label="Confirmation du mot de passe"
+                v-on:focusin="toggleInputFocus" 
+                v-on:focusout="toggleInputFocus"
+                v-on:change="validatePasswordConfirmation"
+                />
+        </div>
+        <small class="errorMessage" v-if="!user.passwordConfirmation.isValid">
+            Le mot de passe de confirmation doit être identique au mot de passe.
+        </small>
+
+        <textarea placeholder="A propos de moi..." id="about-me" v-model="user.aboutMe.value" 
+            v-on:change="validateAboutMe"></textarea>
+        <small class="errorMessage" v-if="!user.aboutMe.isValid">
+            Ce champ n'accepte pas certains caractères spéciaux comme ":" ou "=".  
+        </small>
         <Button label="S'inscrire" @callback-event="signup"/>
-    </Form>
+    </form>
 </template>
 
 <style scoped lang="scss">
@@ -131,6 +369,7 @@
         font-size: 1rem;
         border: 2px #FD2D01 solid;
         text-align: center;
+        margin: 10px 0;
     }
     textarea {
         width: 100%;
@@ -138,7 +377,7 @@
         border: 1px solid #FD2D01;
         border-radius: 4px;
         font-size: 1rem;
-        margin-bottom: 15px;
+        margin: 10px 0 15px 0;
 
         &:focus {
             box-shadow: 0px 0px 5px 0px #FD2D01;
@@ -149,4 +388,69 @@
         color: #4E5166;
         font-size: 11px;
     }
+
+    .errorMessage {
+        color: #FD2D01;
+        font-style: italic;
+        font-size: 11px;
+    }
+    .field {
+        display: flex;
+        flex-direction: column;
+    }
+    /********** FORM **********/
+    form {
+        display: flex;
+        flex-direction: column;
+        width: 350px;
+        margin: auto;
+        border-radius: 0 15px 15px 0;
+        background-color: #FFF;
+        padding: 50px 60px;
+        box-shadow: 0px -2px 15px 5px rgb(0 0 0 / 17%);
+        position: relative;
+        z-index: 1;
+        .inputContainer {
+            display: flex;
+            margin: 0 0 15px 0;
+            align-items: center;
+            position: relative;
+            &-icon {
+                position: absolute;
+            }
+            input {
+                border: none;
+                padding: 5px 10px 5px 30px;
+                width: 100%;
+                height: 40px;
+                border-bottom: 1px solid #eaeaea;
+                &:focus {
+                    outline: none;
+                }
+            }
+            svg {
+                color: #FFD7D7;
+                &.focused {
+                    color: #FD2D01;
+                }
+            }
+        }
+
+    }
+/*----------------------Version téléphone-------------------------------*/
+    @media all and (max-width: 768px) {
+        form {
+            width: 260px;
+            padding: 30px 40px;
+        }
+    }
+/*----------------------Fin Version téléphone-------------------------------*/
+/*----------------------Version tablette-------------------------------*/
+    @media all and (min-width: 769px) and (max-width: 1300px) {
+        form {
+            
+        }
+    }
+/*----------------------Fin Version tablette-------------------------------*/
+
 </style>

@@ -5,10 +5,6 @@
             label: String,
             type: String,
             iconClass: String,
-            inputWidth: {
-                type: String,
-                default: '354px'
-            }
         },
         data: function() {
             return {
@@ -17,16 +13,6 @@
             };
         },
         methods: {
-            validateField: function() {
-                switch(this.type) {
-                    case 'password':
-                        console.log('password');
-                        break;
-                    case 'email':
-                        console.log('email');
-                        break;
-                }
-            },
             toggleInputFocus: function() {
                 this.isFocused = !this.isFocused;
             }
@@ -52,7 +38,6 @@
             v-bind:type="type" 
             v-bind:placeholder="label" 
             v-model="value" 
-            v-on:change="validateField()"
             v-on:focusin="toggleInputFocus" 
             v-on:focusout="toggleInputFocus"
             />

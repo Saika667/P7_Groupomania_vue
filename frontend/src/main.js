@@ -25,8 +25,10 @@ import {
     faLock, 
     faMinus, 
     faPaperPlane, 
+    faPencil, 
     faPlus, 
     faPowerOff, 
+    faTrashCan, 
     faUser, 
     faUsers } from '@fortawesome/free-solid-svg-icons';
 
@@ -48,7 +50,9 @@ library.add(
     faFileImage, 
     faMinus, 
     faPaperPlane, 
-    faClockFour);
+    faClockFour, 
+    faPencil,
+    faTrashCan);
 
 createApp(App)
     // Import font awesome component inside our app

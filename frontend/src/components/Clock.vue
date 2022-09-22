@@ -11,7 +11,6 @@
             // Date.parse et getTime renvoient un timestamp
             let date = Date.parse(this.date);
             let now = new Date().getTime();
-            //TODO: convertir timezone date
             let difference = now - date;
             let seconds = Math.floor(difference / (1000));
             let minutes = Math.floor(difference / (1000*60));

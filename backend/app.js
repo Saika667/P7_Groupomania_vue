@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 
 // Autorise la récupération de ressources depuis le même site
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "same-site" }
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 
 // Appliquer le limiteur

@@ -4,6 +4,7 @@ const Users = require('../models/users');
 const Likes = require('../models/likes');
 
 exports.create = (req, res, next) => {
+    const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '';
     const post = new Posts({
         // On récupère l'id de l'utilisateur connecté grâce au middleware auth
         // Pas confiance aux données pouvant être modifiées par l'utilisateur ->
@@ -11,6 +12,7 @@ exports.create = (req, res, next) => {
         authorId: req.auth.userId,
         // updated_datetime ayant une valeur par défaut on passe le body et createdDatetime
         createdDatetime: new Date(),
+        imageUrl,
         ...req.body
     });
 
@@ -37,7 +39,7 @@ exports.getAll = (req, res, next) => {
                             post.hasUserLiked = like !== null && like.status === 1 ? 1 : 0;
                         })
                         .catch(error => res.status(400).json({ error }));
-                    Users.findOne({_id: post.authorId}, {_id: 0, email: 0, password:0, __v: 0})
+                    Users.findOne({_id: post.authorId}, {email: 0, password:0, __v: 0})
                         .then(user => {
                             post.user = user;
                             index++;

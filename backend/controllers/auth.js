@@ -23,6 +23,7 @@ exports.signup =  (req, res, next) => {
             lastName,
             firstName,
             job,
+            profileImage: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
             ...req.body
         });
         // méthode save permet d'enregistrer l'objet dans la base de donnée et retourne une promise
