@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-border">
             <div class="card-border-identity">
-                <ProfilImage></ProfilImage>
+                <ProfilImage v-bind:imageUrl="user.profileImage"></ProfilImage>
                 <div class="card-border-identity-descrip">
                     <h2>{{ user.lastName}} {{user.firstName}}</h2>
                 </div>

@@ -271,7 +271,7 @@
         </small>
 
         <select name="" id="department" v-on:change="validateDepartment" v-model="user.department.value">
-            <option v-for="department in departments" v-bind:value="department">{{department}}</option>
+            <option v-for="department in departments" v-bind:value="department" >{{department}}</option>
         </select>
         <small class="errorMessage" v-if="!user.department.isValid">
             Département requis.
