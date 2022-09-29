@@ -108,7 +108,7 @@ export default {
             <MenuItemHome iconClass="fas fa-users">Communauté</MenuItemHome>
         </router-link>
         <MenuItemHome iconClass="fas fa-bell">Mes notifications</MenuItemHome>
-        <MenuItemHome iconClass="fas fa-power-off">Déconnexion</MenuItemHome>
+        <MenuItemHome iconClass="fas fa-power-off" v-bind:isLogout="true">Déconnexion</MenuItemHome>
     </MenuHome>
     <main class="news">
         <CreatePostForm @refresh-posts="refreshPosts" @toaster-event="toasterEvent"></CreatePostForm>

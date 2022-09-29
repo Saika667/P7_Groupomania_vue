@@ -1,7 +1,37 @@
 <script>
     export default {
+        data: function() {
+            return {
+                apiUrl: import.meta.env.VITE_API_URL,
+            }
+        },
         props: {
-            iconClass: String
+            iconClass: String,
+            isLogout: {
+                type: Boolean,
+                default: false
+            }
+        },
+        methods: {
+            logout: function() {
+                const self = this;
+                const token = localStorage.getItem('userToken');
+
+                fetch(`${this.apiUrl}/auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },                
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }  
+                }).then(function() {
+                    localStorage.removeItem('userToken');
+                    self.$router.push('/login');
+                })
+            }
         }
     }
 </script>
@@ -12,7 +42,7 @@
     <MenuItemHome iconClass="fas fa-user">Mon profil</MenuItemHome>
     iconClass="fas fa-nom-icon"
     -->
-    <li>
+    <li v-on:click="isLogout ? logout() : ''">
         <div>
             <font-awesome-icon v-bind:icon="iconClass"/>
         </div>
@@ -28,6 +58,7 @@
         align-items: baseline;
         flex-direction: row-reverse;
         color: #4E5166;
+        cursor: pointer;
         div {
             display: flex;
             justify-content: center;
