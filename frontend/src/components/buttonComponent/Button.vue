@@ -37,33 +37,4 @@
             padding: 12px 50px; 
         }
     }
-    /*div {
-        display: flex;
-        justify-content: center;
-        margin: 25px 10px;
-
-        button {
-            font-size: larger;
-            white-space: nowrap;
-            width: 300px;
-            background-color: #FD2D01;
-            border: #FD2D01;
-            color: white;
-            text-transform: uppercase;
-            padding: 0;
-            
-            &:hover {
-                background-color: #FFD7D7;
-                a {
-                    color: #FD2D01;
-                }
-            }
-            
-            a {
-                display: block;
-                padding: 15px 30px;
-                color: white;
-            }
-        }
-    }*/
 </style>

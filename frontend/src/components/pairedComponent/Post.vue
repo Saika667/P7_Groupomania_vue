@@ -116,7 +116,6 @@
                 }).then(function(res) {
                     console.log(res);
                     self.$emit('refresh-posts');
-                    //TODO faire apparaitre le message "post supprimé"
                 })
             },
             showComments: async function() {
@@ -228,7 +227,6 @@
         color: #4E5166;
         background-color: white;
         position: relative;
-        //box-shadow: 0px 0px 7px 0px #FD2D01;
         padding: 20px;
 
         &-header {
@@ -395,12 +393,4 @@
         }
     }
 /*----------------------Fin Version téléphone-------------------------------*/
-/*----------------------Version tablette-------------------------------*/
-    @media all and (min-width: 769px) and (max-width: 1300px) {
-        
-    }
-/*----------------------Fin Version tablette-------------------------------*/
-/*----------------------Fin Version wide-------------------------------*/
-
-/*----------------------Fin Version tablette-------------------------------*/
 </style>

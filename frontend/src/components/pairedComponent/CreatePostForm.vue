@@ -221,8 +221,6 @@
                         svg {
                             transition: all 350ms linear;
                         }
-                        span {
-                        }
                     }
                 }
             }
@@ -312,9 +310,4 @@
         
     }
 /*----------------------Fin Version téléphone-------------------------------*/
-/*----------------------Version tablette-------------------------------*/
-    @media all and (min-width: 769px) and (max-width: 1300px) {
-        
-    }
-/*----------------------Fin Version tablette-------------------------------*/
 </style>

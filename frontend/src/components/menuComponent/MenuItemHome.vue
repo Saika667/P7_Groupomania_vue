@@ -59,6 +59,7 @@
         flex-direction: row-reverse;
         color: #4E5166;
         cursor: pointer;
+        
         div {
             display: flex;
             justify-content: center;
@@ -66,9 +67,7 @@
             width: 90px;
             height: 50px;
         }
-        span {
-
-        }
+        
         &:hover {
             font-weight: bold;
         }

@@ -179,7 +179,7 @@
             margin-left: 10px;
             padding: 0;
         }
-        .card-border-identity-descrip-name h2 {
+        .card-border-identity-descrip h2 {
             font-size: 14px;
         }
         .card-border-work div p {
@@ -192,7 +192,7 @@
 /*----------------------Fin Version téléphone-------------------------------*/
 /*----------------------Version tablette-------------------------------*/
     @media all and (min-width: 769px) and (max-width: 1300px) {
-        .card-border-identity-descrip-name h2 {
+        .card-border-identity-descrip h2 {
             font-size: 15px;
             white-space: nowrap;
         }
