@@ -1,6 +1,32 @@
 <script>
     export default {
-       props: ['imageAddress']
+        props: ['imageAddress'],
+        data: function() {
+            return {
+                apiUrl: import.meta.env.VITE_API_URL,
+            }
+        },
+        methods: {
+            logout: function() {
+                const self = this;
+                const token = localStorage.getItem('userToken');
+
+                fetch(`${this.apiUrl}/auth/logout`, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },                
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }  
+                }).then(function() {
+                    localStorage.removeItem('userToken');
+                    self.$router.push('/login');
+                })
+            }
+        }
     }
 </script>
 
@@ -13,7 +39,7 @@
         </div>
         <slot></slot>
         <div class="header-container">
-            <button type="button" name="deco" class="header-container-btn">
+            <button type="button" name="deco" class="header-container-btn" v-on:click="logout">
                 <div class="header-container-btn-content">
                     <div class="header-container-btn-content-svg">
                         <font-awesome-icon icon="fas fa-power-off"/>

@@ -2,6 +2,7 @@
 const Posts = require('../models/posts');
 const Users = require('../models/users');
 const Likes = require('../models/likes');
+const Comments = require('../models/comments');
 
 exports.create = (req, res, next) => {
     const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '';
@@ -112,4 +113,43 @@ exports.likeUnLike = (req, res, next) => {
                 .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(400).json({ error }));
+}
+
+exports.delete = (req, res, next) => {
+    //la promesse sert à déterminer si l'utilisateur est admin ou propriétaire du post
+    const promise = new Promise((resolve, reject) => {
+        Posts.findOne({_id: req.params.postId})
+            .then((post) => {
+                // toString car post.authorId est un ObjectId et req.auth.userId une string
+                if (post.authorId.toString() === req.auth.userId) {
+                    resolve();
+                } else {
+                    Users.findOne({_id: req.auth.userId})
+                        .then((user) => {
+                            if (user.isAdmin) {
+                                resolve();
+                            }
+                            reject("Vous n'êtes pas autorisé à faire cette action.");
+                        })
+                        .catch(error => res.status(400).json({ error }));
+                }
+            })
+            .catch(error => res.status(400).json({ error }));
+    });
+
+    promise
+        .then(() => {
+            Posts.deleteOne({_id: req.params.postId})
+                .then(() => {
+                    Comments.deleteMany({postId: req.params.postId})
+                        .then(() => {
+                            Likes.deleteMany({postId: req.params.postId})
+                                .then(() => {res.status(201).json({ message: "Post supprimé" });})
+                                .catch(error => res.status(400).json({ error }));
+                        })
+                        .catch(error => res.status(400).json({ error }));
+                })
+                .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => res.status(403).json({ error }));
 }

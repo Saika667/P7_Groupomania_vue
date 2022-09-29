@@ -1,6 +1,6 @@
 <script>
     import Header from "../components/baseComponents/Header.vue";
-    import Logo from "../components/Logo.vue";
+    import Logo from "../components/atomicComponents/Logo.vue";
     import MenuItemHome from "../components/menuComponent/MenuItemHome.vue";
     import MenuHome from "../components/menuComponent/MenuHome.vue";
     import CommunityView from "../components/CommunityView.vue";
@@ -69,13 +69,16 @@
 <template>
     <Header imageAddress="../images/icon-cropped-white.svg"/>
     <MenuHome>
+        <router-link to="/home">
+            <MenuItemHome iconClass="fas fa-house-chimney">Accueil</MenuItemHome>
+        </router-link>
         <router-link to="/profil">
             <MenuItemHome iconClass="fas fa-user">Mon profil</MenuItemHome>
         </router-link>
-        <MenuItemHome iconClass="fas fa-bell">Mes notifications</MenuItemHome>
         <router-link to="/community">
             <MenuItemHome iconClass="fas fa-users">Communauté</MenuItemHome>
         </router-link>
+        <MenuItemHome iconClass="fas fa-bell">Mes notifications</MenuItemHome>
         <MenuItemHome iconClass="fas fa-power-off">Déconnexion</MenuItemHome>
     </MenuHome>
     <div class="community">
@@ -91,13 +94,12 @@
         padding: 80px 0 0 83px;
         display: flex;
         justify-content: center;
-        height: calc(100vh - 80px);
+        min-height: calc(100vh - 80px);
     }
 /*----------------------Version téléphone-------------------------------*/
     @media all and (max-width: 768px) {
         .community {
             padding: 80px 0 0 0;
-            height: initial;
         }
     }
 /*----------------------Fin Version téléphone-------------------------------*/

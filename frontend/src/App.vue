@@ -1,7 +1,6 @@
 <script>
 export default {
   name: "App",
-  components: {}
 };
 </script>
 
@@ -23,11 +22,11 @@ export default {
   a {
     text-decoration: none;
   }
+  #app {
+    position: relative;
+  }
   button {
     cursor: pointer;
-  }
-  #app {
-    //height: 100vh;
   }
   .preload {
     animation: none;

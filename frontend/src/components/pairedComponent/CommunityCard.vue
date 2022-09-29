@@ -1,5 +1,5 @@
 <script>
-    import ProfilImage from "../../components/ProfilImage.vue";
+    import ProfilImage from "../../components/atomicComponents/ProfilImage.vue";
 
     export default {
         components: { 
@@ -15,13 +15,11 @@
             <div class="card-border-identity">
                 <ProfilImage></ProfilImage>
                 <div class="card-border-identity-descrip">
-                    <div class="card-border-identity-descrip-name">
-                        <h2>{{ user.lastName}}&nbsp;{{user.firstName}}</h2>
-                    </div>
+                    <h2>{{ user.lastName}} {{user.firstName}}</h2>
                 </div>
-                <div class="card-border-identity-container" v-if="isAdmin">
-                    <div class="card-border-identity-container-delete">
-                        <div class="card-border-identity-container-delete-svg">
+                <div class="card-border-identity-content" v-if="isAdmin">
+                    <div class="card-border-identity-content-delete">
+                        <div class="card-border-identity-content-delete-svg">
                             <font-awesome-icon icon="fas fa-trash-can"/>
                         </div>
                         <span>Supprimer</span>
@@ -79,7 +77,6 @@
 
             p {
                 font-size: 13px;
-                max-height: 32px;
             }
 
             &-identity {
@@ -91,21 +88,18 @@
 
                 &-descrip {
                     width: 70%;
-
-                    &-name {
-                        display: flex;
-
-                        h2 {
-                            font-size: 18px;
-                            width: 50%;
-                        }
+                    padding: 0 0 0 10px;
+                    display: flex;
+                        
+                    h2 {
+                        font-size: 18px;
+                        white-space: nowrap;
                     }
                 }
 
-                &-container {
-                    width: 90px;
-                    display: flex;
-                    justify-content: center;
+                &-content {
+                    position: absolute;
+                    right: 2px;
 
                     &-delete {
                         display: flex;
@@ -113,7 +107,6 @@
                         width: 33px;
                         overflow: hidden;
                         cursor: pointer;
-                        border: 1px solid #FD2D01;
                         transition: all 500ms ease-in-out;
                         border-radius: 20px;
 
@@ -122,14 +115,19 @@
                         }
 
                         span {
-                            padding: 0 13px 0 0 ;
+                            padding: 0 15px 0 0 ;
                             text-decoration: none;
                             font-weight: bold;
                         }
 
                         &:hover {
                             width: 90px;
+                            background-color: #FD2D01;
+                            color: #FFFFFF;
                             transition: all 500ms ease-in-out;
+                            .card-border-identity-content {
+                                width: 90px;
+                            }
                         }
                     }
                 }
@@ -158,10 +156,6 @@
             &-bio {
                 width: 95%;
                 margin: 0 auto 10px auto;
-                
-                span {
-                    
-                }
 
                 p {
                     padding: 5px 0;;
@@ -183,6 +177,10 @@
         }
         .card-border-identity-descrip {
             margin-left: 10px;
+            padding: 0;
+        }
+        .card-border-identity-descrip-name h2 {
+            font-size: 14px;
         }
         .card-border-work div p {
             font-size: 11px;
@@ -194,7 +192,10 @@
 /*----------------------Fin Version téléphone-------------------------------*/
 /*----------------------Version tablette-------------------------------*/
     @media all and (min-width: 769px) and (max-width: 1300px) {
-        
+        .card-border-identity-descrip-name h2 {
+            font-size: 15px;
+            white-space: nowrap;
+        }
     }
 /*----------------------Fin Version tablette-------------------------------*/
 </style>

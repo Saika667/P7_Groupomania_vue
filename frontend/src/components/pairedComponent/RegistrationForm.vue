@@ -90,7 +90,7 @@
                 fetch(`${this.apiUrl}/auth/signup`, {
                     method: "POST",
                     headers: {
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
                     },
                     body: formData
                 }).then(function(res) {
@@ -126,7 +126,7 @@
                 }
             },
             validateJob: function() {
-                let regexName = new RegExp(/^[A-Za-z ]{2,}$/);
+                let regexName = new RegExp(/^[A-Za-z \']{2,}$/);
                 if (!regexName.test(this.user.job.value)) {
                     this.user.job.isValid = false;
                 } else {
@@ -177,7 +177,7 @@
                 }
             },
             validateAboutMe: function() {
-                let regexAboutMe = new RegExp(/^[A-Za-zÀ-ÿ 0-9\!\.\?\,\'\(\)\-]{2,}$/);
+                let regexAboutMe = new RegExp(/^[A-Za-zÀ-ÿ 0-9\!\.\?\,\'\(\)\-]{0,}$/);
                 if(!regexAboutMe.test(this.user.aboutMe.value)) {
                     this.user.aboutMe.isValid = false;
                 } else {

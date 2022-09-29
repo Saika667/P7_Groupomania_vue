@@ -1,6 +1,6 @@
 <script>
     import Button from "../../components/buttonComponent/Button.vue";
-    import ProfilImage from "../../components/ProfilImage.vue";
+    import ProfilImage from "../../components/atomicComponents/ProfilImage.vue";
     import ButtonSubmit from "../../components/buttonComponent/ButtonSubmit.vue";
     // Réussi à faire fonctionner en ajoutant une config dans vite.config.js
     import jwt_decode from "jwt-decode";
@@ -15,7 +15,8 @@
                 form: {
                     content: "",
                     image: ""
-                }
+                },
+                imageUrl: ""
             }
         },
         components: { 
@@ -45,14 +46,23 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
-                    // TODO affichage succès + mise à jour liste des posts en homepage
                     self.$emit('refresh-posts');
-                    console.log(res);
-                })
+                    self.$emit('toaster-event', 'success', res.message);
+                    self.form.content = '';
+                    self.form.image = '';
+                    self.writePost = false;
+                }).catch((exception) => {
+                    // Emit accepte un nombre de paramètres """illimité"""
+                    // 1er paramètre = nom de l'event appelé dans le composant parent
+                    // Du 2ème au dernier paramètre = arguments passés à l'évènement parent
+                    self.$emit('toaster-event', 'error', exception.message);
+                });
             },
             getImage(event) {
                 this.form.image = event.target.files[0];
+                this.imageUrl = URL.createObjectURL(this.form.image);
             }
         },
         async created() {
@@ -77,7 +87,6 @@
                 }
             }).then(function(res) {
                 self.user = res.user;
-                console.log(self.user);
             });
         }
     }
@@ -128,6 +137,10 @@
                 <input type="file" id="image" v-on:change="getImage"/>
                 <font-awesome-icon icon="fas fa-file-image"/>
             </label>
+            <div class="create-post-form-preview" v-if="imageUrl !== ''">
+                <h4>Prévisualisation</h4>
+                <img v-bind:src="imageUrl"/>
+            </div>
             <ButtonSubmit label="Publier" @callback-event="createPost"/>
         </form>
     </div>
@@ -138,6 +151,7 @@
         display: flex;
         flex-direction: column;
         width: 70%;
+        max-width: 1300px;
         background-color: white;
         border-radius: 10px;
         margin: auto;
@@ -228,7 +242,7 @@
                 margin: 20px 0 0 0;
             }
             h3 {
-                margin-bottom: 10px;
+                margin: 0 0 10px 2.5%;
             }
 
             textarea {
@@ -248,6 +262,23 @@
                     outline-style: none;
                 }
             }
+
+            &-preview {
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                h4 {
+                    margin-bottom: 10px;
+                    width: 100%;
+                }
+
+                img {
+                    max-width: 100px;
+                }
+            }
+
             &-file {
                 display: flex;
                 justify-content: center;
@@ -256,7 +287,7 @@
                 margin-bottom: 10px;
                 color: #4E5166;
                 position: absolute;
-                bottom: 40px;
+                top: 106px;
                 left: 10px;
 
                 input {

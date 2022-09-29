@@ -95,7 +95,6 @@
                 label="Email"
                 v-on:focusin="toggleInputFocus" 
                 v-on:focusout="toggleInputFocus"
-                v-on:change="validateEmail"
                 />
         </div>
 
@@ -111,7 +110,7 @@
                 v-model="user.password.value"
                 v-on:focusin="toggleInputFocus" 
                 v-on:focusout="toggleInputFocus"
-                v-on:change="validatePassword"
+                v-on:keypress.enter="login"
                 />
         </div>
 
@@ -129,7 +128,7 @@
     -->
         <Button label="Se connecter" @callback-event="login"/>
         
-        <router-link class="forgotten" to="/forgotten-password">Mot de passe oublié ?</router-link>
+        <p class="forgotten">Mot de passe oublié ?</p>
     </form>
 </template>
 

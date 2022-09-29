@@ -1,7 +1,7 @@
 <script>
-    import ProfilImage from "../../components/ProfilImage.vue";
+    import ProfilImage from "../../components/atomicComponents/ProfilImage.vue";
     import Comment from "./Comment.vue";
-    import Clock from "../../components/Clock.vue";
+    import Clock from "../../components/atomicComponents/Clock.vue";
     import jwt_decode from 'jwt-decode';
 
     export default {
@@ -64,12 +64,16 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
                     self.post.numberComment = self.post.numberComment + 1;
                     self.contentComment = '';
                     self.refreshComments();
                     self.$forceUpdate();
-                })
+                    self.$emit('toaster-event', 'success', res.message);
+                }).catch((exception) => {
+                    self.$emit('toaster-event', 'error', exception.message);
+                });
             },
             refreshComments: async function() {
                 const bearer = localStorage.getItem('userToken');
@@ -88,6 +92,31 @@
                 }).then(function(comments) {
                     self.comments = comments;
                     self.$forceUpdate();
+                })
+            },
+            showConfirmation: function() {
+                // vnode permet de récupérer la key passée au composant depuis le parent
+                // Passer la key permet d'identifier le composant sur lequel se situe l'action
+                this.$emit('show-confirmation', this._.vnode.key);
+            },
+            deletePost: async function() {
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+                
+                fetch(`${this.apiUrl}/posts/${this.post._id}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(res) {
+                    console.log(res);
+                    self.$emit('refresh-posts');
+                    //TODO faire apparaitre le message "post supprimé"
                 })
             },
             showComments: async function() {
@@ -138,7 +167,6 @@
                         <p>{{ post.user.job }} - {{ post.user.department }}</p>
                     </div>
                     <p class="post-header-profil-identity-timer">
-                        <!-- TODO à calculer -->
                         <Clock v-bind:date="post.createdDatetime"></Clock>
                     </p>
                 </div>
@@ -150,7 +178,7 @@
                     <div class="post-header-menu-content-item">
                         <span>Modifier</span>
                     </div>
-                    <div class="post-header-menu-content-item">
+                    <div class="post-header-menu-content-item" v-on:click="showConfirmation">
                         <span>Supprimer</span>
                     </div>
                 </div>
@@ -194,6 +222,7 @@
 <style scoped lang="scss">
     .post {
         width: 70%;
+        max-width: 1300px;
         margin: 20px auto;
         border-radius: 10px;
         color: #4E5166;
@@ -289,7 +318,6 @@
             img {
                 width: 98%;
                 object-fit: contain;
-                max-height: 270px;
             }
         }
 
@@ -334,7 +362,7 @@
                     margin-left: 15px;
                     border-radius: 20px;
                     border: none;
-                    width: 89%;
+                    width: 94%;
                     padding-left: 15px;
                     background-color: lighten(#4E5166, 60);
                 }
@@ -371,5 +399,8 @@
     @media all and (min-width: 769px) and (max-width: 1300px) {
         
     }
+/*----------------------Fin Version tablette-------------------------------*/
+/*----------------------Fin Version wide-------------------------------*/
+
 /*----------------------Fin Version tablette-------------------------------*/
 </style>

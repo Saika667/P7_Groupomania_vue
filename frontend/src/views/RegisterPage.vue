@@ -1,20 +1,20 @@
 <script>
-import RegistrationForm from "../components/pairedComponent/RegistrationForm.vue";
-import Menu from "../components/menuComponent/Menu.vue";
-import MenuItem from "../components/menuComponent/MenuItem.vue";
-import Logo from "../components/Logo.vue";
-import Footer from "../components/baseComponents/Footer.vue";
-// Création du composant principal App
-export default {
-  name: "RegisterPage",
-  components: {
-    RegistrationForm,
-    Menu,
-    MenuItem,
-    Logo,
-    Footer,
+  import RegistrationForm from "../components/pairedComponent/RegistrationForm.vue";
+  import Menu from "../components/menuComponent/Menu.vue";
+  import MenuItem from "../components/menuComponent/MenuItem.vue";
+  import Logo from "../components/atomicComponents/Logo.vue";
+  import Footer from "../components/baseComponents/Footer.vue";
+  // Création du composant principal App
+  export default {
+    name: "RegisterPage",
+    components: {
+      RegistrationForm,
+      Menu,
+      MenuItem,
+      Logo,
+      Footer,
+    }
   }
-}
 </script>
 
 <template>

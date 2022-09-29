@@ -15,7 +15,7 @@
 
 <template>
     <div class="container">
-        <div>
+        <div class="container-img">
             <img v-bind:src="imageUrl" alt=""/>
         </div>
     </div>
@@ -32,7 +32,7 @@
         align-items: center;
         background: linear-gradient(50deg, rgba(253,45,1,1) 32%, rgba(78,81,102,1) 53%, rgba(255,215,215,1) 72%);
 
-            div {
+            &-img {
             border-radius: 50%;
             overflow: hidden;
             width: v-bind(sizeImage);

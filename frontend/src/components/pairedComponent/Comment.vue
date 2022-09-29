@@ -1,6 +1,6 @@
 <script>
-    import ProfilImage from "../../components/ProfilImage.vue";
-    import Clock from "../../components/Clock.vue";
+    import ProfilImage from "../../components/atomicComponents/ProfilImage.vue";
+    import Clock from "../../components/atomicComponents/Clock.vue";
     import jwt_decode from 'jwt-decode';
 
     export default {

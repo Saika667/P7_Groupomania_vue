@@ -2,7 +2,7 @@
   import LoginForm from "../components/pairedComponent/LoginForm.vue";
   import Menu from "../components/menuComponent/Menu.vue";
   import MenuItem from "../components/menuComponent/MenuItem.vue";
-  import Logo from "../components/Logo.vue";
+  import Logo from "../components/atomicComponents/Logo.vue";
   import Footer from "../components/baseComponents/Footer.vue";
   // Création du composant principal App
   export default {
@@ -13,19 +13,12 @@
       MenuItem,
       Logo,
       Footer,
-    }
+    },
   }
 </script>
 
 <template>
   <div class="background">
-    <!--<Header imageAddress="../images/icon-left-font.svg">
-        <Menu>
-        <MenuItem href="/">Se connecter</MenuItem>
-        <MenuItem href="/register">S'inscrire</MenuItem>
-        </Menu>
-    </Header>-->
-    <!-- Y a t il mieux ?-->
     <Logo imageAddress="../images/icon-left-font-monochrome-white.svg"/>
     <Menu>
         <MenuItem href="/login" v-bind:isActive="true">Se connecter</MenuItem>

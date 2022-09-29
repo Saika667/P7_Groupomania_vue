@@ -12,5 +12,6 @@ const postsCtrl = require('../controllers/posts');
 router.post('/', auth, multer, postsCtrl.create);
 router.get('/', auth, postsCtrl.getAll);
 router.post('/:postId/like', auth, postsCtrl.likeUnLike);
+router.delete('/:postId', auth, postsCtrl.delete);
 
 module.exports = router;

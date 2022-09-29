@@ -14,14 +14,15 @@ import {
     faBarsStaggered, 
     faBell, 
     faBriefcase, 
-    faCamera, 
-    faClock, 
+    faCamera,
+    faCheck,
     faClockFour, 
     faComments, 
     faEllipsisVertical, 
     faEnvelope, 
     faFileImage, 
     faHeart, 
+    faHouseChimney, 
     faLock, 
     faMinus, 
     faPaperPlane, 
@@ -30,7 +31,8 @@ import {
     faPowerOff, 
     faTrashCan, 
     faUser, 
-    faUsers } from '@fortawesome/free-solid-svg-icons';
+    faUsers, 
+    faXmark} from '@fortawesome/free-solid-svg-icons';
 
 // Add certain icons to the font awesome library
 library.add(
@@ -52,7 +54,10 @@ library.add(
     faPaperPlane, 
     faClockFour, 
     faPencil,
-    faTrashCan);
+    faTrashCan,
+    faXmark,
+    faCheck,
+    faHouseChimney);
 
 createApp(App)
     // Import font awesome component inside our app

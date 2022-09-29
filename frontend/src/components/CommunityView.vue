@@ -23,6 +23,7 @@
         display: flex;
         flex-direction: column;
         width: 80%;
+        max-width: 1100px;
         border-radius: 10px;
         color: #4E5166;
         margin-bottom: 20px;
@@ -55,7 +56,9 @@
 /*----------------------Fin Version téléphone-------------------------------*/
 /*----------------------Version tablette-------------------------------*/
     @media all and (min-width: 769px) and (max-width: 1300px) {
-        
+        .view {
+            width: 90%;
+        }
     }
 /*----------------------Fin Version tablette-------------------------------*/
 </style>
