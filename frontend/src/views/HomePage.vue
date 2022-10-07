@@ -17,6 +17,7 @@ export default {
             apiUrl: import.meta.env.VITE_API_URL,
             posts: [],
             isAdmin: false,
+            connectedUserImage: null
         }
     },
     components: {
@@ -52,6 +53,7 @@ export default {
             }
         }).then(function(res) {
             self.isAdmin = res.user.isAdmin;
+            self.connectedUserImage = res.user.profileImage;
         })
 
         this.refreshPosts();
@@ -114,6 +116,7 @@ export default {
         <CreatePostForm @refresh-posts="refreshPosts" @toaster-event="toasterEvent"></CreatePostForm>
         <Post v-for="post, index in posts" v-bind:post="post" v-bind:isAdmin="isAdmin" v-bind:key="index"
             ref="posts"
+            v-bind:connectedUserImage="connectedUserImage"
             @refresh-posts="refreshPosts"
             @toaster-event="toasterEvent"
             @show-confirmation="showConfirmAction"></Post>

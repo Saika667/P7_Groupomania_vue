@@ -12,7 +12,7 @@
             Clock,
             ButtonSubmit
         },
-        props: ['post', 'isAdmin'],
+        props: ['post', 'isAdmin', 'connectedUserImage'],
         data: function() {
             return {
                 hasImage: this.post.imageUrl !== '',
@@ -252,7 +252,7 @@
                 <Comment v-for="comment of comments" v-bind:comment="comment"></Comment>
             </div>
             <div class="post-footer-comments">
-                <ProfilImage sizeImage="40px"></ProfilImage>
+                <ProfilImage sizeImage="40px" v-bind:imageUrl="connectedUserImage"></ProfilImage>
                 <input type="text" placeholder="Ajouter un commentaire" v-model="contentComment"/>
                 <div class="post-footer-comments-send" v-on:click="createComment">
                     <font-awesome-icon icon="fas fa-paper-plane" />
