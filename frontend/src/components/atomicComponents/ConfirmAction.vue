@@ -8,7 +8,7 @@
         },
         methods: {
             confirm: function() {
-                this.$emit('delete-post', this.targetId);
+                this.$emit('delete', this.targetId);
                 this.isVisible = false;
             },
             cancel: function() {

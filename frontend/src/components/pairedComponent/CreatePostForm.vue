@@ -132,11 +132,13 @@
 
         <form class="create-post-form" v-bind:class="{expanded:writePost}">
             <h3>Ajouter une publication</h3>
-            <textarea placeholder="Description de la publication" id="content" v-model="form.content"></textarea>
-            <label class="create-post-form-file">
-                <input type="file" id="image" v-on:change="getImage"/>
-                <font-awesome-icon icon="fas fa-file-image"/>
-            </label>
+            <div class="create-post-form-desc">
+                <textarea placeholder="Description de la publication" id="content" v-model="form.content"></textarea>
+                <label class="create-post-form-desc-file">
+                    <input type="file" id="image" v-on:change="getImage"/>
+                    <font-awesome-icon icon="fas fa-file-image"/>
+                </label>
+            </div>
             <div class="create-post-form-preview" v-if="imageUrl !== ''">
                 <h4>Prévisualisation</h4>
                 <img v-bind:src="imageUrl"/>
@@ -246,12 +248,12 @@
             textarea {
                 margin-bottom: 10px;
                 height: 100px;
-                width: 95%;
+                width: 100%;
                 margin: auto;
                 border: none;
                 background-color: lighten(#4E5166, 60);
                 border-radius: 10px;
-                padding: 5px 0 0 5px;
+                padding: 10px 0 0 10px;
                 resize: none;
 
                 &:focus {
@@ -276,20 +278,24 @@
                     max-width: 100px;
                 }
             }
+            &-desc {
+                position: relative;
+                width: 95%;
+                margin: auto;
+    
+                &-file {
+                    display: flex;
+                    justify-content: center;
+                    cursor: pointer;
+                    margin-bottom: 10px;
+                    color: #4E5166;
+                    position: absolute;
+                    bottom: 10px;
+                    left: 10px;
 
-            &-file {
-                display: flex;
-                justify-content: center;
-                padding: 6px 12px;
-                cursor: pointer;
-                margin-bottom: 10px;
-                color: #4E5166;
-                position: absolute;
-                top: 106px;
-                left: 10px;
-
-                input {
-                    display: none;
+                    input {
+                        display: none;
+                    }
                 }
             }
         }

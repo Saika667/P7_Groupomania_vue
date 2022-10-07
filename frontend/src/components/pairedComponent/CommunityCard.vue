@@ -6,6 +6,38 @@
             ProfilImage,
         },
         props: ['user', 'isAdmin'],
+        data: function() {
+            return {
+                apiUrl: import.meta.env.VITE_API_URL,
+            };
+        },
+        methods: {
+            showConfirmation: function() {
+                this.$emit('show-confirmation', this._.vnode.key);
+            },
+            deleteUser: async function() {
+                const bearer = localStorage.getItem('userToken');
+                
+                const self = this;
+                
+                fetch(`${this.apiUrl}/users/${this.user._id}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(res) {
+                    self.$emit('toaster-event', 'success', res.message);
+                    self.$emit('refresh-cards');
+                }).catch(function(exception) {
+                    self.$emit('toaster-event', 'error', exception.message);
+                });
+            }
+        }
     }
 </script>
 
@@ -17,7 +49,7 @@
                 <div class="card-border-identity-descrip">
                     <h2>{{ user.lastName}} {{user.firstName}}</h2>
                 </div>
-                <div class="card-border-identity-content" v-if="isAdmin">
+                <div class="card-border-identity-content" v-if="isAdmin" v-on:click="showConfirmation">
                     <div class="card-border-identity-content-delete">
                         <div class="card-border-identity-content-delete-svg">
                             <font-awesome-icon icon="fas fa-trash-can"/>

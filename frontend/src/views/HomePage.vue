@@ -86,6 +86,7 @@ export default {
             this.$refs.confirm.targetId = refId;
         },
         deletePost: function(refId) {
+            // appelle la fonction deletePost du composant Post
             this.$refs.posts[refId].deletePost();
         },
     }
@@ -94,8 +95,7 @@ export default {
 
 <template>
     <Toaster ref="toaster"></Toaster>
-    <ConfirmAction ref="confirm"
-        @delete-post="deletePost"></ConfirmAction>
+    <ConfirmAction ref="confirm" @delete="deletePost"></ConfirmAction>
     <Header imageAddress="../images/icon-cropped-white.svg"/>
     <MenuHome>
         <router-link to="/home">

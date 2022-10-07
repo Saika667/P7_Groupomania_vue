@@ -4,6 +4,9 @@ const Users = require('../models/users');
 const Likes = require('../models/likes');
 const Comments = require('../models/comments');
 
+const fs = require('fs');
+const path = require('path');
+
 exports.create = (req, res, next) => {
     const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '';
     const post = new Posts({
@@ -152,4 +155,34 @@ exports.delete = (req, res, next) => {
                 .catch(error => res.status(400).json({ error }));
         })
         .catch(error => res.status(403).json({ error }));
+}
+
+exports.modify = async (req, res, next) => {
+    //si req.file (=si un fichier à été passer et multer n'autorise que les images) existe
+    //alors req.protocol (=correspond en général à HTTP ou HTTPS)
+    //req.get('host') permet d'ajouter ce qu'il y a entre '://' et '/images/' dans notre cas : localhost:3000
+    //req.file.filename représente le nom du fichier 
+    //cela donne des noms de ficher comme suit : http://localhost:3000/images/nomFichier.jpg
+    //si pas de fichier alors string vide
+    const imageUrl = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '';
+    const updatePost = {
+        ...req.body
+    };
+
+    const post = await Posts.findOne({_id: req.params.postId});
+    
+    if(req.file !== undefined) {
+        // On crée un objet url depuis la string sauvegardée pour pouvoir accéder à .pathname
+        const url = new URL(post.imageUrl);
+        const imagePath = url.pathname;
+        
+        // On supprime l'ancienne image, __dirname = répertoire courant
+        fs.unlinkSync(path.join(__dirname, `..${imagePath}`));
+        updatePost.imageUrl= imageUrl;
+    }
+    
+    Posts.findOneAndUpdate({_id: req.params.postId}, updatePost)
+        .then(() => {res.status(200).json({message: "Post modifié avec succès"})})
+        .catch(error => { res.status(400).json({error })});
+
 }

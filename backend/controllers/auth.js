@@ -28,6 +28,7 @@ exports.signup =  (req, res, next) => {
         });
         // méthode save permet d'enregistrer l'objet dans la base de donnée et retourne une promise
         user.save()
+            // amélioration : retourner un token pour une connexion automatique après enregistrement
             .then(() => res.status(201).json({ message: 'Création de compte effectuée !'}))
             //error dans json est écrit sous forme de raccourci c'est la même chose que 'error: error'
             .catch(error => res.status(400).json({ error }));

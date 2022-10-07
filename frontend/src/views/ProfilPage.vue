@@ -6,6 +6,7 @@
     import jwt_decode from "jwt-decode";
     import Toaster from '../components/atomicComponents/Toaster.vue';
     import ButtonSubmit from "../components/buttonComponent/ButtonSubmit.vue";
+    import ConfirmAction from '../components/atomicComponents/ConfirmAction.vue';
 
     export default {
         name: "HomePage",
@@ -15,7 +16,8 @@
             MenuHome,
             ProfilImage,
             Toaster,
-            ButtonSubmit
+            ButtonSubmit,
+            ConfirmAction
         },
         data: function() {
             return {
@@ -117,7 +119,7 @@
                 this.user.image.imageUrl = URL.createObjectURL(this.user.image.value);
             },
             validateLastName: function() {
-                let regexName = new RegExp(/^[A-Za-z]{2,}$/);
+                let regexName = new RegExp(/^[A-Za-zÀ-ÿ-]{2,}$/);
                 if (!regexName.test(this.user.lastName.value)) {
                     this.user.lastName.isValid = false;
                 } else {
@@ -125,7 +127,7 @@
                 }
             },
             validateFirstName: function() {
-                let regexName = new RegExp(/^[A-Za-z]{2,}$/);
+                let regexName = new RegExp(/^[A-Za-zÀ-ÿ-]{2,}$/);
                 if (!regexName.test(this.user.firstName.value)) {
                     this.user.firstName.isValid = false;
                 } else {
@@ -133,7 +135,7 @@
                 }
             },
             validateJob: function() {
-                let regexName = new RegExp(/^[A-Za-z \']{2,}$/);
+                let regexName = new RegExp(/^[A-Za-zÀ-ÿ \']{2,}$/);
                 if (!regexName.test(this.user.job.value)) {
                     this.user.job.isValid = false;
                 } else {
@@ -162,6 +164,29 @@
                     this.user.aboutMe.isValid = true;
                 }
             },
+            showConfirmation: function() {
+                this.$refs.confirm.isVisible = true;
+            },
+            deleteProfil: async function() {
+                const bearer = localStorage.getItem('userToken');
+                const decodedToken = jwt_decode(bearer);
+                const userId = decodedToken.userId;
+                const self = this;
+                
+                fetch(`${this.apiUrl}/users/${userId}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function() {
+                    self.$router.push('/register');
+                })
+            }
         },
         async created() {
             const bearer = localStorage.getItem('userToken');
@@ -201,6 +226,7 @@
     
 <template>
     <Header imageAddress="../images/icon-cropped-white.svg"/>
+    <ConfirmAction ref="confirm" @delete="deleteProfil"></ConfirmAction>
     <Toaster ref="toaster"></Toaster>
     <MenuHome>
         <router-link to="/home">
@@ -224,7 +250,7 @@
                         <span>Modifier</span>
                     </div>
 
-                    <div class="content-header-btn-delete" >
+                    <div class="content-header-btn-delete" v-on:click="showConfirmation">
                         <font-awesome-icon icon="fas fa-trash-can"/>
                         <span>Supprimer</span>
                     </div>

@@ -3,12 +3,14 @@
     import Comment from "./Comment.vue";
     import Clock from "../../components/atomicComponents/Clock.vue";
     import jwt_decode from 'jwt-decode';
+    import ButtonSubmit from "../../components/buttonComponent/ButtonSubmit.vue";
 
     export default {
         components: { 
             ProfilImage, 
             Comment,
-            Clock
+            Clock,
+            ButtonSubmit
         },
         props: ['post', 'isAdmin'],
         data: function() {
@@ -20,10 +22,18 @@
                 contentComment: '',
                 displayComments: false,
                 comments: [],
-                userId: ''
+                userId: '',
+                isModifyPost: false,
+                previewImage: {
+                    image: null,
+                    url: ''
+                }
             }
         },
         methods: {
+            toggleModifyPost: function() {
+                this.isModifyPost = !this.isModifyPost;
+            },
             toggleVisibility() {
                 this.isVisible = !this.isVisible;
             },
@@ -47,6 +57,36 @@
                     self.post.numberLike = self.isLike ? self.post.numberLike + 1 : self.post.numberLike - 1;
                     self.$forceUpdate();
                 });
+            },
+            showConfirmation: function() {
+                // vnode permet de récupérer la key passée au composant depuis le parent
+                // Passer la key permet d'identifier le composant sur lequel se situe l'action
+                this.$emit('show-confirmation', this._.vnode.key);
+            },
+            showComments: async function() {
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+                //TODO ajouter catch sur tous les fetch
+                if (this.displayComments) {
+                    this.displayComments = false;
+                    return;
+                }
+                fetch(`${this.apiUrl}/comments/post/${this.post._id}`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(comments) {
+                    self.comments = comments;
+                    self.displayComments = true;
+                    self.$forceUpdate();
+                })
             },
             createComment: async function() {
                 const content = this.contentComment;
@@ -94,11 +134,6 @@
                     self.$forceUpdate();
                 })
             },
-            showConfirmation: function() {
-                // vnode permet de récupérer la key passée au composant depuis le parent
-                // Passer la key permet d'identifier le composant sur lequel se situe l'action
-                this.$emit('show-confirmation', this._.vnode.key);
-            },
             deletePost: async function() {
                 const bearer = localStorage.getItem('userToken');
                 const self = this;
@@ -114,34 +149,42 @@
                         return res.json();
                     }
                 }).then(function(res) {
-                    console.log(res);
                     self.$emit('refresh-posts');
                 })
             },
-            showComments: async function() {
-                const bearer = localStorage.getItem('userToken');
-                const self = this;
-                //TODO ajouter catch sur tous les fetch
-                if (this.displayComments) {
-                    this.displayComments = false;
+            modifyPost: async function() {
+                if(this.post.content === '') {
                     return;
                 }
-                fetch(`${this.apiUrl}/comments/post/${this.post._id}`, {
-                    method: "GET",
+
+                let formData = new FormData();
+                formData.append('content', this.post.content);
+                formData.append('image', this.previewImage.image);
+                
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+                
+                fetch(`${this.apiUrl}/posts/${this.post._id}/modify`, {
+                    method: "PUT",
                     headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${bearer}`
                     },
+                    body: formData
                 }).then(function(res) {
                     if (res.ok) {
                         return res.json();
                     }
-                }).then(function(comments) {
-                    self.comments = comments;
-                    self.displayComments = true;
-                    self.$forceUpdate();
+                }).then(function(res) {
+
+                    self.$emit('refresh-posts');
                 })
+
+            },
+            getImage(event) {
+                // Champ qui sera envoyé à l'API -> comprend le nom + le fichier etc
+                this.previewImage.image = event.target.files[0];
+                // Sert à faire une preview du fichier uploadé
+                this.previewImage.url = URL.createObjectURL(this.previewImage.image);
             }
         },
         created() {
@@ -170,11 +213,13 @@
                     </p>
                 </div>
             </div>
-            
-            <div class="post-header-menu" v-on:click="toggleVisibility" v-if="isAdmin || userId === post.user._id">
-                <font-awesome-icon icon="fas fa-ellipsis-vertical" />
+            <div class="post-header-menu" v-show="isModifyPost" v-on:click="isModifyPost = false">
+                <font-awesome-icon icon="fas fa-xmark"/>
+            </div>
+            <div class="post-header-menu" v-on:click="toggleVisibility" v-show="!isModifyPost" v-if="isAdmin || userId === post.user._id">
+                <font-awesome-icon icon="fas fa-ellipsis-vertical"/>
                 <div class="post-header-menu-content" v-bind:class="{isVisible: this.isVisible}">
-                    <div class="post-header-menu-content-item">
+                    <div class="post-header-menu-content-item" v-on:click="toggleModifyPost">
                         <span>Modifier</span>
                     </div>
                     <div class="post-header-menu-content-item" v-on:click="showConfirmation">
@@ -184,15 +229,14 @@
             </div>
         </div>
 
-        <div class="post-main">
+        <div class="post-main" v-show="!isModifyPost">
             <div class="post-main-descrip">
                 <p>{{ post.content }}</p>
             </div>
-            <!-- Vérifier src avec une route différente de fakeroot -->
-           <img v-if="post.imageUrl !== ''" v-bind:src="post.imageUrl" alt="" />
+            <img v-if="post.imageUrl !== ''" v-bind:src="post.imageUrl" alt="" />
         </div>
 
-        <div class="post-footer">
+        <div class="post-footer" v-show="!isModifyPost">
             <div class="post-footer-number">
                 <div class="post-footer-number-comment" v-on:click="showComments">
                     <font-awesome-icon icon="fas fa-comments" />
@@ -215,6 +259,37 @@
                 </div>
             </div>
         </div>
+        <form class="post-modify" v-show="isModifyPost">
+            <h3>Modification de Post :</h3>
+            <div class="post-modify-descrip">
+                <textarea placeholder="Description de la publication" 
+                    id="content" 
+                    v-model="post.content">
+                </textarea>
+                <!--v-model="user.aboutMe.value" 
+                    v-on:change="validateAboutMe"-->
+                <small class="errorMessage" v-if="post.content === ''">
+                    <!--v-if="!user.aboutMe.isValid"-->
+                    Ce champ doit avoir un contenu.  
+                </small>
+            </div>
+
+            <div class="inputContainer">
+                <div class="input-wrapper">
+                    <label class="file">
+                        <input type="file" id="image" v-on:change="getImage" />
+                        <!--v-on:change="onChangeProfileImage"-->
+                        <font-awesome-icon icon="fas fa-file-image"/>
+                        <p>Modifier l'image</p>
+                    </label>
+                </div>
+            </div>
+
+            <div class="post-modify-preview" v-if="post.imageUrl !== ''">
+                <img v-bind:src="previewImage.url === '' ? post.imageUrl : previewImage.url"/>
+            </div>
+            <ButtonSubmit label="Modifier" @callback-event="modifyPost"></ButtonSubmit>
+        </form>        
     </article>
 </template>
 
@@ -344,6 +419,7 @@
                     
                 }
             }
+            
             &-comments {
                 display: flex;
                 position: relative;
@@ -366,7 +442,70 @@
                 }
             }
         }
+        
+        &-modify {
+            padding: 20px;
+
+            &-descrip {
+                display: flex;
+                flex-direction: column;
+
+                textarea {
+                    height: 100px;
+                    border-radius: 4px;
+                    font-size: 1rem;
+                    margin: 10px 0 0 0;
+                    border: none;
+                    box-shadow: 0px 0px 5px 0px #4E5166;
+                    resize: none;
+
+                    &:focus {
+                        box-shadow: 0px 0px 5px 0px #FD2D01;
+                        outline-style: none;
+                    }
+                }
+            }
+
+            &-preview {
+                img {
+                    width: 100%;
+                }
+            }
+        }
     }
+    .errorMessage {
+        color: #FD2D01;
+        font-style: italic;
+        font-size: 11px;
+        margin: 5px 0;
+    }
+    .inputContainer {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .file {
+            display: flex;
+            justify-content: center;
+            padding: 6px 12px;
+            cursor: pointer;
+            color: #4E5166;
+            font-size: 14px;
+
+            p {
+                margin: 0 0 0 5px;
+            }
+
+            input {
+                display: none;
+            }
+        }
+    }
+
     @keyframes like {
         0% {
             transform: scale(1);

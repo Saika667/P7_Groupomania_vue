@@ -17,7 +17,7 @@ import {
     faCamera,
     faCheck,
     faClockFour, 
-    faComments, 
+    faComments,  
     faEllipsisVertical, 
     faEnvelope, 
     faFileImage, 

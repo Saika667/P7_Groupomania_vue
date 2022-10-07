@@ -5,7 +5,7 @@ const Comments = require('../models/comments');
 const { update } = require('../models/users');
 
 exports.getAll = (req, res, next) => {
-    Users.find({}, {_id: 0, __v: 0}).sort({lastName : 1}).limit(20).lean()
+    Users.find({}, {__v: 0}).sort({lastName : 1}).limit(20).lean()
         .then(function(users) {res.status(200).json(users);})
         .catch(error => res.status(400).json({ error }));
 };
@@ -58,7 +58,7 @@ exports.delete = (req, res, next) => {
             //supprime les likes de l'utilisateur et décrémente le compteur de like
             let likes = await Likes.find({likerId: req.params.userId});
             for(let like of likes) {
-                let post = await Posts.findOne({postId: like.postId});
+                let post = await Posts.findOne({_id: like.postId});
                 post.numberLike--;
                 await post.save();
                 await like.delete();
@@ -66,7 +66,7 @@ exports.delete = (req, res, next) => {
             //supprime les commentaires de l'utilisateur et décrémente le compteur de commentaire
             let comments = await Comments.find({authorId: req.params.userId});
             for(let comment of comments) {
-                let post = await Posts.findOne({postId: comment.postId});
+                let post = await Posts.findOne({_id: comment.postId});
                 post.numberComment--;
                 await post.save();
                 await comment.delete();

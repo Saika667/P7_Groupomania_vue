@@ -5,6 +5,8 @@
     import MenuHome from "../components/menuComponent/MenuHome.vue";
     import CommunityView from "../components/CommunityView.vue";
     import CommunityCard from "../components/pairedComponent/CommunityCard.vue";
+    import ConfirmAction from "../components/atomicComponents/ConfirmAction.vue";
+    import Toaster from "../components/atomicComponents/Toaster.vue";
     import jwt_decode from "jwt-decode";
 
     export default {
@@ -15,7 +17,9 @@
             MenuItemHome,
             MenuHome,
             CommunityView,
-            CommunityCard
+            CommunityCard,
+            ConfirmAction,
+            Toaster
         },
         data: function() {
             return {
@@ -23,6 +27,38 @@
                 apiUrl: import.meta.env.VITE_API_URL,
                 users: [],
                 isAdmin: false
+            }
+        },
+        methods: {
+            showConfirmAction: function(refId) {
+                this.$refs.confirm.isVisible = true;
+                this.$refs.confirm.targetId = refId;
+            },
+            deleteUser: function(targetId) {
+                // appelle la méthode deleteUser du composant CommunityCard
+                this.$refs.cards[targetId].deleteUser();
+            },
+            showToaster: function(type, message) {
+                this.$refs.toaster.show(type, message);
+            },
+            refreshCards: function() {
+                const bearer = localStorage.getItem('userToken');
+                const self = this;
+
+                fetch(`${this.apiUrl}/users`, {
+                    method: "GET",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${bearer}`
+                    },
+                }).then(function(res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                }).then(function(res) {
+                    self.users = res;
+                })
             }
         },
         async created() {
@@ -68,6 +104,8 @@
 
 <template>
     <Header imageAddress="../images/icon-cropped-white.svg"/>
+    <Toaster ref="toaster"></Toaster>
+    <ConfirmAction ref="confirm" @delete="deleteUser" @show-confirmation="showConfirmAction"></ConfirmAction>
     <MenuHome>
         <router-link to="/home">
             <MenuItemHome iconClass="fas fa-house-chimney">Accueil</MenuItemHome>
@@ -83,7 +121,10 @@
     </MenuHome>
     <div class="community">
         <CommunityView>
-            <CommunityCard v-for="user in users" v-bind:user="user" v-bind:isAdmin="isAdmin"></CommunityCard>
+            <CommunityCard v-for="(user, index) in users" v-bind:user="user" ref="cards" v-bind:isAdmin="isAdmin"
+                           v-bind:key="index" @show-confirmation="showConfirmAction" @toaster-event="showToaster"
+                           @refresh-cards="refreshCards"
+            ></CommunityCard>
         </CommunityView>
     </div>
 </template>

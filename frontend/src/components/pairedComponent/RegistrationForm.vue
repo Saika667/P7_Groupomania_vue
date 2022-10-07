@@ -37,7 +37,8 @@
                         isValid: true
                     },
                     department: {
-                        value: '',
+                        // Valeur initiale du select
+                        value: 'Choisir un département',
                         isValid: true
                     },
                     email: {
@@ -86,6 +87,7 @@
                 for (let key in this.user) {
                     formData.append(key, this.user[key].value);
                 }
+                const self = this;
 
                 fetch(`${this.apiUrl}/auth/signup`, {
                     method: "POST",
@@ -97,10 +99,8 @@
                     if (res.ok) {
                         return res.json();
                     }
-                }).then(function(res) {
-                    if (res.token) {
-                        localStorage.setItem('userToken', res.token);
-                    }
+                }).then(function() {
+                    self.$router.push('/login');
                 })
             },
             toggleInputFocus: function(evt) {
@@ -110,7 +110,7 @@
                 this.user.image.value = event.target.files[0];
             },
             validateLastName: function() {
-                let regexName = new RegExp(/^[A-Za-z]{2,}$/);
+                let regexName = new RegExp(/^[A-Za-zÀ-ÿ-]{2,}$/);
                 if (!regexName.test(this.user.lastName.value)) {
                     this.user.lastName.isValid = false;
                 } else {
@@ -118,7 +118,7 @@
                 }
             },
             validateFirstName: function() {
-                let regexName = new RegExp(/^[A-Za-z]{2,}$/);
+                let regexName = new RegExp(/^[A-Za-zÀ-ÿ-]{2,}$/);
                 if (!regexName.test(this.user.firstName.value)) {
                     this.user.firstName.isValid = false;
                 } else {
@@ -126,7 +126,7 @@
                 }
             },
             validateJob: function() {
-                let regexName = new RegExp(/^[A-Za-z \']{2,}$/);
+                let regexName = new RegExp(/^[A-Za-zÀ-ÿ \']{2,}$/);
                 if (!regexName.test(this.user.job.value)) {
                     this.user.job.isValid = false;
                 } else {
