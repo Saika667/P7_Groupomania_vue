@@ -27,7 +27,7 @@
 <template>
     <article class="comment" v-bind:class="{mine: comment.user._id === connectedUserId}">
         <div class="comment-author">
-            <ProfilImage sizeImage="35px"></ProfilImage>
+            <ProfilImage sizeImage="35px" v-bind:imageUrl="comment.user.profileImage"></ProfilImage>
             <div class="comment-author-descrip">
                 <h2>{{comment.user.lastName}} {{comment.user.firstName}}</h2>
                 <Clock v-bind:date="comment.createdDatetime"></Clock>
@@ -94,9 +94,11 @@
 	    }
         &.mine {
             background-color: lighten(#4E5166, 60);
+            
             &:after {
                 display: block;
             }
+
             &:before {
                 display: none;
             }

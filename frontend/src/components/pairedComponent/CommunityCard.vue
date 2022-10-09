@@ -30,6 +30,7 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
                     self.$emit('toaster-event', 'success', res.message);
                     self.$emit('refresh-cards');

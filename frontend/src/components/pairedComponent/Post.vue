@@ -25,7 +25,7 @@
                 userId: '',
                 isModifyPost: false,
                 previewImage: {
-                    image: null,
+                    image: this.post.imageUrl,
                     url: ''
                 }
             }
@@ -53,9 +53,12 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
                     self.post.numberLike = self.isLike ? self.post.numberLike + 1 : self.post.numberLike - 1;
                     self.$forceUpdate();
+                }).catch((exception) => {
+                    self.$refs.toaster.show('error', exception.message);
                 });
             },
             showConfirmation: function() {
@@ -66,7 +69,6 @@
             showComments: async function() {
                 const bearer = localStorage.getItem('userToken');
                 const self = this;
-                //TODO ajouter catch sur tous les fetch
                 if (this.displayComments) {
                     this.displayComments = false;
                     return;
@@ -82,11 +84,14 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(comments) {
                     self.comments = comments;
                     self.displayComments = true;
                     self.$forceUpdate();
-                })
+                }).catch((exception) => {
+                    self.$refs.toaster.show('error', exception.message);
+                });
             },
             createComment: async function() {
                 const content = this.contentComment;
@@ -129,10 +134,13 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(comments) {
                     self.comments = comments;
                     self.$forceUpdate();
-                })
+                }).catch((exception) => {
+                    self.$refs.toaster.show('error', exception.message);
+                });
             },
             deletePost: async function() {
                 const bearer = localStorage.getItem('userToken');
@@ -148,9 +156,13 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
                     self.$emit('refresh-posts');
-                })
+                    self.$emit('toaster-event', 'success', res.message);
+                }).catch((exception) => {
+                    self.$emit('toaster-event', 'error', exception.message);
+                });
             },
             modifyPost: async function() {
                 if(this.post.content === '') {
@@ -174,10 +186,14 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
-
+                    self.isModifyPost = false;
                     self.$emit('refresh-posts');
-                })
+                    self.$emit('toaster-event', 'success', res.message);
+                }).catch((exception) => {
+                    self.$emit('toaster-event', 'error', exception.message);
+                });
 
             },
             getImage(event) {
@@ -185,6 +201,11 @@
                 this.previewImage.image = event.target.files[0];
                 // Sert à faire une preview du fichier uploadé
                 this.previewImage.url = URL.createObjectURL(this.previewImage.image);
+            },
+            deleteImage: function() {
+                this.post.imageUrl = '';
+                this.previewImage.image = '';
+                this.previewImage.url = '';
             }
         },
         created() {
@@ -193,6 +214,7 @@
             const decodedToken = jwt_decode(bearer);
             //récupère le userId décodé
             this.userId = decodedToken.userId;
+            console.log(this.post);
         }
     }
 </script>
@@ -266,26 +288,28 @@
                     id="content" 
                     v-model="post.content">
                 </textarea>
-                <!--v-model="user.aboutMe.value" 
-                    v-on:change="validateAboutMe"-->
                 <small class="errorMessage" v-if="post.content === ''">
-                    <!--v-if="!user.aboutMe.isValid"-->
                     Ce champ doit avoir un contenu.  
                 </small>
             </div>
+            <div class="post-modify-image">
+                <div class="inputContainer">
+                    <div class="input-wrapper">
+                        <label class="file">
+                            <input type="file" id="image" v-on:change="getImage" />
+                            <font-awesome-icon icon="fas fa-file-image"/>
+                            <p>Modifier l'image</p>
+                        </label>
+                    </div>
+                </div>
 
-            <div class="inputContainer">
-                <div class="input-wrapper">
-                    <label class="file">
-                        <input type="file" id="image" v-on:change="getImage" />
-                        <!--v-on:change="onChangeProfileImage"-->
-                        <font-awesome-icon icon="fas fa-file-image"/>
-                        <p>Modifier l'image</p>
-                    </label>
+                <div class="post-modify-image-delete" v-on:click="deleteImage">
+                    <font-awesome-icon icon="fas fa-trash-can"/>
                 </div>
             </div>
+            
 
-            <div class="post-modify-preview" v-if="post.imageUrl !== ''">
+            <div class="post-modify-preview" v-if="post.imageUrl !== '' || previewImage.url !== ''">
                 <img v-bind:src="previewImage.url === '' ? post.imageUrl : previewImage.url"/>
             </div>
             <ButtonSubmit label="Modifier" @callback-event="modifyPost"></ButtonSubmit>
@@ -320,13 +344,16 @@
                         font-size: 18px;
                         margin: 0;
                     }
+
                     &-job {
                         display: flex;
                         font-size: 11px;
+
                         p {
                             padding: 0 0 0 5px;
                         }
                     }
+
                     &-timer {
                         font-size: 9px;
                         font-style: italic;
@@ -463,6 +490,18 @@
                         box-shadow: 0px 0px 5px 0px #FD2D01;
                         outline-style: none;
                     }
+                }
+            }
+
+            &-image {
+                display: flex;
+                justify-content: space-between;
+
+                &-delete {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
                 }
             }
 

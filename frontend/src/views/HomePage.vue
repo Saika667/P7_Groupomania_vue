@@ -51,9 +51,12 @@ export default {
             if (res.ok) {
                 return res.json();
             }
+            throw new Error("Quelque chose s'est mal passé");
         }).then(function(res) {
             self.isAdmin = res.user.isAdmin;
             self.connectedUserImage = res.user.profileImage;
+        }).catch(function(exception) {
+            self.$refs.toaster.show('error', exception.message);
         })
 
         this.refreshPosts();
@@ -76,6 +79,7 @@ export default {
                 throw new Error("Quelque chose s'est mal passé");
             }).then(function(res) {
                 self.posts = res;
+                self.$forceUpdate();
             }).catch((exception) => {
                 self.$refs.toaster.show('error', exception.message);
             });
@@ -135,11 +139,5 @@ export default {
             padding: 80px 0 1px 0;
         }
     }
-   
 /*----------------------Fin Version téléphone-------------------------------*/
-/*----------------------Version tablette-------------------------------*/
-    @media all and (min-width: 769px) and (max-width: 1300px) {
-        
-    }
-/*----------------------Fin Version tablette-------------------------------*/
 </style>

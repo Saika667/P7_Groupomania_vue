@@ -28,16 +28,18 @@
         background-color: #FFFFFF;
         border-radius: 6px 6px 0 0;
         margin-right: 10px;
+
         a {
             display: block;
             padding: 12px 35px;
             color: #4E5166;
             font-weight: bold;
         }
-        &.active, &:hover {
-            
+        
+        &.active, &:hover {           
             background-color: rgb(78 81 102 / 75%);
             transition: all 0.7s linear;
+
             & a {
                 color: #FFFFFF;
                 transition: all 0.35s linear;

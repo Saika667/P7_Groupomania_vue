@@ -99,9 +99,12 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function() {
                     self.$router.push('/login');
-                })
+                }).catch((exception) => {
+                    self.$refs.toaster.show('error', exception.message);
+                });
             },
             toggleInputFocus: function(evt) {
                 this.user[evt.target.id].isFocused = !this.user[evt.target.id].isFocused;
@@ -415,19 +418,23 @@
             margin: 0 0 15px 0;
             align-items: center;
             position: relative;
+
             &-icon {
                 position: absolute;
             }
+
             input {
                 border: none;
                 padding: 5px 10px 5px 30px;
                 width: 100%;
                 height: 40px;
                 border-bottom: 1px solid #eaeaea;
+
                 &:focus {
                     outline: none;
                 }
             }
+
             svg {
                 color: #FFD7D7;
                 &.focused {

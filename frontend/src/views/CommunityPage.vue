@@ -56,9 +56,12 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
                     self.users = res;
-                })
+                }).catch((exception) => {
+                    self.$refs.toaster.show('error', exception.message);
+                });
             }
         },
         async created() {
@@ -80,9 +83,12 @@
                 if (res.ok) {
                     return res.json();
                 }
+                throw new Error("Quelque chose s'est mal passé");
             }).then(function(res) {
                 self.users = res;
-            })
+            }).catch((exception) => {
+                self.$refs.toaster.show('error', exception.message);
+            });
             
             fetch(`${this.apiUrl}/users/${userId}`, {
                 method: "GET",
@@ -95,9 +101,12 @@
                 if (res.ok) {
                     return res.json();
                 }
+                throw new Error("Quelque chose s'est mal passé");
             }).then(function(res) {
                 self.isAdmin = res.user.isAdmin;
-            })
+            }).catch((exception) => {
+                self.$refs.toaster.show('error', exception.message);
+            });
         }
     }
 </script>
@@ -144,9 +153,4 @@
         }
     }
 /*----------------------Fin Version téléphone-------------------------------*/
-/*----------------------Version tablette-------------------------------*/
-    @media all and (min-width: 769px) and (max-width: 1300px) {
-        
-    }
-/*----------------------Fin Version tablette-------------------------------*/
 </style>

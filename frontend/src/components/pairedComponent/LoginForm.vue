@@ -39,8 +39,6 @@
             cela permet à l'utilisateur de ne pas avoir à se reconnecter à chaque changement de page
             */
             login: async function() {
-                //const email = document.getElementById('email').value;
-                //const password = document.getElementById('password').value;
                 // Sauvegarde du contexte pour utilisation dans .then (autre contexte)
                 const self = this;
 

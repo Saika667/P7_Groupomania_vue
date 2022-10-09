@@ -183,8 +183,11 @@
                     if (res.ok) {
                         return res.json();
                     }
+                    throw new Error("Quelque chose s'est mal passé");
                 }).then(function() {
                     self.$router.push('/register');
+                }).catch(function(exception) {
+                    self.$refs.toaster.show('error', exception.message);
                 })
             }
         },
@@ -208,6 +211,7 @@
                 if (res.ok) {
                     return res.json();
                 }
+                throw new Error("Quelque chose s'est mal passé");
             }).then(function(res) {
                 for(let key in res.user) {
                     if(key === "_id" || key === "__v" || key === "isAdmin" || key === "password") {
@@ -219,6 +223,8 @@
                         self.user[key].value = res.user[key];
                     }
                 }
+            }).catch(function(exception) {
+                self.$refs.toaster.show('error', exception.message);
             })
         }
     }
@@ -501,13 +507,16 @@
 
         &-job {
             margin: 15px 0;
+
             &-info {
                 margin: 10px 0;
                 display: flex;
+
                 p {
                     width: 145px;
                     text-decoration: underline;
                 }
+
                 span {
                     font-weight: bold;
                 }
@@ -534,13 +543,16 @@
                 .inputContainer {
                     margin: 0;
                 }
+
                 &-preview {
                     width: 35%;
                     display: flex;
                     flex-direction: column;
+
                     h4 {
                         margin-bottom: 10px;
                     }
+
                     &-border {
                         border-radius: 50%;
                         overflow: hidden;
@@ -548,6 +560,7 @@
                         height: 100px;
                         display: flex;
                         margin-left: 25px;
+
                         img {
                             width: 100%;
                             object-fit: cover;
@@ -602,9 +615,11 @@
             display: flex;
             align-items: center;
         }
+
         &-icon {
             position: absolute;
         }
+
         input {
             border: none;
             padding: 5px 10px 5px 30px;
@@ -617,6 +632,7 @@
                 outline: none;
             }
         }
+
         svg {
             color: #FFD7D7;
             &.focused {

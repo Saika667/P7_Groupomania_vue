@@ -170,16 +170,19 @@ exports.modify = async (req, res, next) => {
     };
 
     const post = await Posts.findOne({_id: req.params.postId});
-    
-    if(req.file !== undefined) {
+    //req.file !== undefined : on passe un fichier dans la requête donc on veut supp l'ancien
+    // req.body.image === '' : si c'est string vide on souhaite supprimer l'ancienne photo 
+    // post.imageUrl !== '' : correspond à l'image enregistré précédemment si il y en a une
+    if((req.file !== undefined || req.body.image === '') && post.imageUrl !== '') {
         // On crée un objet url depuis la string sauvegardée pour pouvoir accéder à .pathname
         const url = new URL(post.imageUrl);
         const imagePath = url.pathname;
         
         // On supprime l'ancienne image, __dirname = répertoire courant
         fs.unlinkSync(path.join(__dirname, `..${imagePath}`));
-        updatePost.imageUrl= imageUrl;
     }
+
+    updatePost.imageUrl = imageUrl;
     
     Posts.findOneAndUpdate({_id: req.params.postId}, updatePost)
         .then(() => {res.status(200).json({message: "Post modifié avec succès"})})

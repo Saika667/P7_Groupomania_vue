@@ -1,5 +1,4 @@
 <script>
-    import Button from "../../components/buttonComponent/Button.vue";
     import ProfilImage from "../../components/atomicComponents/ProfilImage.vue";
     import ButtonSubmit from "../../components/buttonComponent/ButtonSubmit.vue";
     // Réussi à faire fonctionner en ajoutant une config dans vite.config.js
@@ -20,7 +19,6 @@
             }
         },
         components: { 
-            Button,
             ProfilImage,
             ButtonSubmit
         },
@@ -241,6 +239,7 @@
                 transition: max-height 1s linear;
                 margin: 20px 0 0 0;
             }
+            
             h3 {
                 margin: 0 0 10px 2.5%;
             }
@@ -287,10 +286,9 @@
                     display: flex;
                     justify-content: center;
                     cursor: pointer;
-                    margin-bottom: 10px;
                     color: #4E5166;
                     position: absolute;
-                    bottom: 10px;
+                    bottom: 12px;
                     left: 10px;
 
                     input {

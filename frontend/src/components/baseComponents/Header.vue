@@ -37,7 +37,6 @@
                 <img v-bind:src="imageAddress"/>
             </router-link>
         </div>
-        <slot></slot>
         <div class="header-container">
             <button type="button" name="deco" class="header-container-btn" v-on:click="logout">
                 <div class="header-container-btn-content">
