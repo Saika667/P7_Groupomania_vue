@@ -2,7 +2,10 @@ const Users = require('../models/users');
 const Likes = require('../models/likes');
 const Posts = require('../models/posts');
 const Comments = require('../models/comments');
-const { update } = require('../models/users');
+
+const fs = require('fs');
+const path = require('path');
+const { findOne } = require('../models/users');
 
 exports.getAll = (req, res, next) => {
     Users.find({}, {__v: 0}).sort({lastName : 1}).limit(20).lean()
@@ -29,9 +32,21 @@ exports.modify = (req, res, next) => {
         job,
         ...req.body
     };
+
     if (req.file !== undefined) {
+        Users.findOne({_id: req.auth.userId})
+            .then((user) => {
+                // On crée un objet url depuis la string sauvegardée pour pouvoir accéder à .pathname
+                const url = new URL(user.profileImage);
+                const imagePath = url.pathname;
+
+                // On supprime l'ancienne image, __dirname = répertoire courant
+                fs.unlinkSync(path.join(__dirname, `..${imagePath}`));
+            })
+
         updatedUser.profileImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`;
     }
+
     Users.findOneAndUpdate({_id: req.auth.userId}, updatedUser)
         .then(() => {res.status(200).json({message: "Compte utilisateur modifié"})})
         .catch(error => { res.status(400).json({error })});
@@ -79,6 +94,14 @@ exports.delete = (req, res, next) => {
             }
             //supprime les posts de l'utilisateur
             await Posts.deleteMany({authorId: req.params.userId});
+
+            let user = await Users.findOne({_id: req.auth.userId});
+            // On crée un objet url depuis la string sauvegardée pour pouvoir accéder à .pathname
+            const url = new URL(user.profileImage);
+            const imagePath = url.pathname;
+            // On supprime l'ancienne image, __dirname = répertoire courant
+            fs.unlinkSync(path.join(__dirname, `..${imagePath}`));
+
             //supprime l'utilisateur
             await Users.deleteOne({_id: req.params.userId});
             res.status(200).json({ message: "Utilisateur supprimé" });
