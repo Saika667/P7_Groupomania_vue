@@ -16,7 +16,6 @@ exports.create = (req, res, next) => {
         .then(() => {
             Posts.findOne({_id: req.params.postId})
                 .then(post => {
-                    console.log(post);
                     post.numberComment++;
                     post.save()
                         .then(() => res.status(201).json({ message: 'Création de commentaire effectuée !'}))

@@ -46,7 +46,8 @@
                     }
                     throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
-                    self.$emit('refresh-posts');
+                    //true permet de refermer les commentaires ouverts
+                    self.$emit('refresh-posts', true);
                     self.$emit('toaster-event', 'success', res.message);
                     self.form.content = '';
                     self.form.image = '';

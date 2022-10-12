@@ -102,7 +102,6 @@ exports.likeUnLike = (req, res, next) => {
                             return;
                         }
                     }
-                    console.log(like);
 
                     // On imbrique pour s'assurer que la sauvegarde précédente a bien été effectuée
                     post.save()

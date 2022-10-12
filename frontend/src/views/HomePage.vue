@@ -7,7 +7,7 @@ import MenuHome from "../components/menuComponent/MenuHome.vue";
 import CreatePostForm from "../components/pairedComponent/CreatePostForm.vue";
 import jwt_decode from "jwt-decode";
 import Toaster from "../components/atomicComponents/Toaster.vue";
-import ConfirmAction from "../components/atomicComponents/ConfirmAction.vue"
+import ConfirmAction from "../components/atomicComponents/ConfirmAction.vue";
 
 export default {
     name: "HomePage",
@@ -59,10 +59,10 @@ export default {
             self.$refs.toaster.show('error', exception.message);
         })
 
-        this.refreshPosts();
+        this.refreshPosts(false);
     },
     methods: {
-        refreshPosts: async function() {
+        refreshPosts: async function(collapseComments) {
             const bearer = localStorage.getItem('userToken');
             const self = this;
             fetch(`${this.apiUrl}/posts`, {
@@ -78,6 +78,12 @@ export default {
                 }
                 throw new Error("Quelque chose s'est mal passé");
             }).then(function(res) {
+                if (collapseComments) {
+                    //sert à refermer les commentaires
+                    for(let i = 0; i < self.posts.length; i++) {
+                        self.$refs.posts[i].displayComments = false;
+                    }
+                }
                 self.posts = res;
                 self.$forceUpdate();
             }).catch((exception) => {

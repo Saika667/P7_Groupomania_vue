@@ -17,7 +17,6 @@
             return {
                 hasImage: this.post.imageUrl !== '',
                 isVisible: false,
-                isLike: this.post.hasUserLiked,
                 apiUrl: import.meta.env.VITE_API_URL,
                 contentComment: '',
                 displayComments: false,
@@ -38,7 +37,7 @@
                 this.isVisible = !this.isVisible;
             },
             toggleLike() {
-                this.isLike = !this.isLike;
+                this.post.hasUserLiked = !this.post.hasUserLiked;
                 const bearer = localStorage.getItem('userToken');
                 const self = this;
                 fetch(`${this.apiUrl}/posts/${this.post._id}/like`, {
@@ -48,14 +47,14 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${bearer}`
                     },
-                    body: JSON.stringify({status: this.isLike ? 1 : 0})
+                    body: JSON.stringify({status: this.post.hasUserLiked ? 1 : 0})
                 }).then(function(res) {
                     if (res.ok) {
                         return res.json();
                     }
                     throw new Error("Quelque chose s'est mal passé");
                 }).then(function(res) {
-                    self.post.numberLike = self.isLike ? self.post.numberLike + 1 : self.post.numberLike - 1;
+                    self.post.numberLike = self.post.hasUserLiked ? self.post.numberLike + 1 : self.post.numberLike - 1;
                     self.$forceUpdate();
                 }).catch((exception) => {
                     self.$refs.toaster.show('error', exception.message);
@@ -214,7 +213,6 @@
             const decodedToken = jwt_decode(bearer);
             //récupère le userId décodé
             this.userId = decodedToken.userId;
-            console.log(this.post);
         }
     }
 </script>
@@ -265,7 +263,7 @@
                     {{post.numberComment}} commentaires
                 </div>
 
-                <div class="post-footer-number-like" v-bind:class="{isLike: this.isLike}" v-on:click="toggleLike">
+                <div class="post-footer-number-like" v-bind:class="{isLike: this.post.hasUserLiked}" v-on:click="toggleLike">
                     {{post.numberLike}}
                     <font-awesome-icon icon="fas fa-heart" />
                 </div>
