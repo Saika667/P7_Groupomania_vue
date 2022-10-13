@@ -5,7 +5,6 @@ const Comments = require('../models/comments');
 
 const fs = require('fs');
 const path = require('path');
-const { findOne } = require('../models/users');
 
 exports.getAll = (req, res, next) => {
     Users.find({}, {__v: 0}).sort({lastName : 1}).limit(20).lean()
@@ -64,7 +63,7 @@ exports.delete = (req, res, next) => {
                 if(user.isAdmin) {
                     resolve();
                 }
-                reject();
+                reject("Vous n'êtes pas autorisé à faire cette action.");
             })
     })
 
@@ -99,7 +98,7 @@ exports.delete = (req, res, next) => {
             // On crée un objet url depuis la string sauvegardée pour pouvoir accéder à .pathname
             const url = new URL(user.profileImage);
             const imagePath = url.pathname;
-            // On supprime l'ancienne image, __dirname = répertoire courant
+            // On supprime image, __dirname = répertoire courant
             fs.unlinkSync(path.join(__dirname, `..${imagePath}`));
 
             //supprime l'utilisateur
