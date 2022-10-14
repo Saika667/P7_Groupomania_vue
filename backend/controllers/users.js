@@ -94,7 +94,7 @@ exports.delete = (req, res, next) => {
             //supprime les posts de l'utilisateur
             await Posts.deleteMany({authorId: req.params.userId});
 
-            let user = await Users.findOne({_id: req.auth.userId});
+            let user = await Users.findOne({_id: req.params.userId});
             // On crée un objet url depuis la string sauvegardée pour pouvoir accéder à .pathname
             const url = new URL(user.profileImage);
             const imagePath = url.pathname;
