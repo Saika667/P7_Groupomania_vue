@@ -1,4 +1,6 @@
-# P7_Groupomania
+**Projet 7 - Groupomania**
+-
+*Dans le cadre de la formation OpenClassrooms "développeur web"*
 
 ## Description du projet
 C'est un réseau social d'entreprise développé grâce à node js et le framework Vue. La base du projet a été initialisée grâce à Vitejs.
