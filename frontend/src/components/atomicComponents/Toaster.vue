@@ -18,8 +18,8 @@
                 this.message = message;
                 this.isVisible = true;
                 this.canAnimate = true;
-                this.logoUrl = this.type === "success" ? "../../public/images/success-logo.svg" : "../../public/images/failure-logo.svg";
-                this.bubblesUrl = this.type === "success" ? "../../public/images/success-corner.svg" : "../../public/images/failure-corner.svg";
+                this.logoUrl = this.type === "success" ? "../../images/success-logo.svg" : "../../images/failure-logo.svg";
+                this.bubblesUrl = this.type === "success" ? "../../images/success-corner.svg" : "../../images/failure-corner.svg";
                 this.background = this.type === "success" ? "#03A65A" : "#F63E50";
                 // x secondes après affichage on cache
                 // setTimeout a besoin de 2 paramètres: 1 fonction callback + 1 temps (en ms)
